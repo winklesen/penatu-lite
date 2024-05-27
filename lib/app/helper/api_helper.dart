@@ -27,8 +27,11 @@ class ApiHelper {
     );
   }
 
-  // Generic CRUD operations
+  Future<User?> getSession() async{
+    return _client.auth.currentUser;
+  }
 
+  // Generic CRUD operations
   // Create
   Future<void> insertData(String table, Map<String, dynamic> data) async {
     final response = await _client.from(table).insert(data);

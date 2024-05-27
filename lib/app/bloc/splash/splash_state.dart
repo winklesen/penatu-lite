@@ -9,6 +9,10 @@ class InitialSplashState extends SplashState {}
 
 class LoadingSplashState extends SplashState {}
 
+class EmptySessionSplashState extends SplashState {}
+
+class LoggedInSplashState extends SplashState {}
+
 class ErrorSplashState extends SplashState {
   final String title, message;
 

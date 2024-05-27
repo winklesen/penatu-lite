@@ -2,12 +2,22 @@ import 'package:penatu/app/helper/api_helper.dart';
 import 'package:penatu/app/model/detail_pesanan.dart';
 import 'package:penatu/app/model/pesanan.dart';
 import 'package:penatu/app/model/user.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
+
 import 'package:penatu/app/repository/remote/main_data_source.dart';
+
+
 
 class MainRepository extends MainDataSource {
   final ApiHelper _apiHelper;
 
   MainRepository(this._apiHelper);
+
+  @override
+  Future<supabase.User?> getUserSession() async{
+    supabase.User? userSession = await _apiHelper.getSession();
+    return userSession;
+  }
 
   @override
   Future<List<Pesanan>> getPesananByStatus(String status) async {
@@ -71,4 +81,6 @@ class MainRepository extends MainDataSource {
     await _apiHelper.updateData(
         ApiHelper.TABLE_USER, 'id_user', idUser, user.toJson());
   }
+
+
 }

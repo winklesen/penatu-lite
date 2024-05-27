@@ -1,9 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penatu/app/bloc/splash/splash_event.dart';
 import 'package:penatu/app/bloc/splash/splash_state.dart';
-import 'package:penatu/app/helper/log_helper.dart';
 import 'package:penatu/app/repository/local/local_data_source.dart';
 import 'package:penatu/app/repository/remote/main_data_source.dart';
+import 'package:penatu/app/utils/constants.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
   final MainDataSource _mainRepository;
@@ -11,8 +12,8 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
   SplashBloc(this._mainRepository, this._localRepository)
       : super(InitialSplashState()) {
-    on<CheckAppVersion>((event, emit) async {
-      await _mapCheckServerStatusToState();
+    on<CheckSession>((event, emit) async {
+      await _mapCheckSessionToState();
     });
   }
 
@@ -20,12 +21,18 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     this.close();
   }
 
-  Future<void> _mapCheckServerStatusToState() async {
+  Future<void> _mapCheckSessionToState() async {
     try {
-      log.i('12.emit(LoadingSplashState());');
       emit(LoadingSplashState());
-    } catch (e, stackTrace) {
 
+      User? userSession = await _mainRepository.getUserSession();
+      if (userSession == null) {
+        emit(EmptySessionSplashState());
+      } else {
+        emit(LoggedInSplashState());
+      }
+    } catch (e, stackTrace) {
+      emit(ErrorSplashState(errorTitle, e.toString()));
     }
   }
 }

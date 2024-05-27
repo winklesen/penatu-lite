@@ -1,6 +1,7 @@
 import 'package:penatu/app/model/detail_pesanan.dart';
 import 'package:penatu/app/model/pesanan.dart';
 import 'package:penatu/app/model/user.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 
 
@@ -12,6 +13,7 @@ abstract class MainDataSource {
   // Future<List<Pesanan>> getAllPesanan();
   // Future<List<DetailPesanan>> getAllDetailPesanan();
 
+  Future<supabase.User?> getUserSession();
   Future<User> getUserDetail(String idUser);
   Future<List<Pesanan>> getPesananByStatus(String status);
   Future<List<DetailPesanan>> getPesananDetail(String idPesanan);

@@ -10,6 +10,7 @@ import 'package:penatu/app/bloc/theme/theme_event.dart';
 import 'package:penatu/app/bloc/theme/theme_state.dart';
 import 'package:penatu/app/di/injection_container.dart';
 import 'package:penatu/ui/account/account_page.dart';
+import 'package:penatu/ui/auth/auth_page.dart';
 import 'package:penatu/ui/dashboard/dashboard_page.dart';
 import 'package:penatu/ui/history/history_page.dart';
 import 'package:penatu/ui/order/order_page.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
       initialRoute: SplashPage.routeName,
       routes: {
         SplashPage.routeName: (context) => SplashPage(),
+        AuthPage.routeName: (context) => AuthPage(),
         DashboardPage.routeName: (context) => DashboardPage(),
         OrderPage.routeName: (context) => OrderPage(),
         AccountPage.routeName: (context) => AccountPage(),

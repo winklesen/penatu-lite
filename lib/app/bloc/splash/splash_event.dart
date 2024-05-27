@@ -5,4 +5,4 @@ abstract class SplashEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CheckAppVersion extends SplashEvent {}
+class CheckSession extends SplashEvent {}

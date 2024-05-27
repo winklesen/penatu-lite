@@ -7,10 +7,9 @@ Laundry Management App
 - Showcase
 - Login / Register
 - Dashboard
--- Order Histori
--- Profile
--- Stats
--- Today, month order
+- Order Histori
+- Profile
+- Stats (Today, month order)
 - Pesanan
 
 
@@ -20,8 +19,9 @@ Laundry Management App
 ## Instalasi 🔧
 
 1. clone repository
-2. flutter pub get 
-3. flutter run
+2. flutter pub get
+3. create .env & isi confignya
+4. flutter run
 
 ## Kontributor ✨
 
