@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:penatu/app/model/user.dart' as model;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ApiHelper {
@@ -27,8 +29,54 @@ class ApiHelper {
     );
   }
 
-  Future<User?> getSession() async{
-    return _client.auth.currentUser;
+  Future<AuthResponse> postUserLogin(String email, String password) async {
+    return _client.auth.signInWithPassword(email: email, password: password);
+    //   AuthException
+  }
+
+  Future<AuthResponse> postUserRegister(String email, String password) async {
+    return _client.auth.signUp(email: email, password: password);
+  }
+
+  Future<GoTrueClient> postUserMagicLink(
+    String email,
+  ) async {
+    await _client.auth.signInWithOtp(
+      email: email,
+      emailRedirectTo:
+          kIsWeb ? null : 'io.supabase.flutterquickstart://login-callback',
+    );
+
+    return _client.auth;
+  }
+
+  Future<void> putUserData(
+    String idUser,
+    String namaToko,
+    String namaUser,
+    String telepon,
+  ) async {
+    await _client.from(TABLE_USER).update({
+      'nama_toko': namaToko,
+      'nama_user': namaUser,
+      'nomor_telepon': telepon,
+    }).eq('id_user', idUser);
+  }
+
+  Future<GoTrueClient> getAuth() async {
+    return _client.auth;
+  }
+
+  Future<String?> getSessionId() async {
+    return _client.auth.currentUser?.id;
+  }
+
+  Future<model.User> getSessionData() async {
+    String? userId = await _client.auth.currentUser?.id;
+    var response =
+        await _client.from(TABLE_USER).select().eq('id_user', userId!).single();
+    return model.User.fromJson(response);
+    ;
   }
 
   // Generic CRUD operations
@@ -50,24 +98,23 @@ class ApiHelper {
     }
   }
 
-  Future<dynamic> getWhereData(String table,
-      String columnName,
-      dynamic columnValue,) async {
-    final response = await _client
-        .from(table)
-        .select()
-        .eq(columnName, columnValue);
+  Future<dynamic> getWhereData(
+    String table,
+    String columnName,
+    dynamic columnValue,
+  ) async {
+    final response =
+        await _client.from(table).select().eq(columnName, columnValue);
     // if (response.error != null) {
     //   throw Exception('Failed to get data with where clause: ${response.error!.message}');
     // }
     return response;
   }
 
-
   // Read - Get a single record by ID
   Future<dynamic> getDataById(String table, String idColumn, dynamic id) async {
     final response =
-    await _client.from(table).select().eq(idColumn, id).single();
+        await _client.from(table).select().eq(idColumn, id).single();
     // if (response.error != null) {
     //   throw Exception('Failed to get data: ${response.error!.message}');
     // }
@@ -107,10 +154,10 @@ class ApiHelper {
   }
 
   // Search by name
-  Future<dynamic> searchByName(String table, String nameColumn,
-      String query) async {
+  Future<dynamic> searchByName(
+      String table, String nameColumn, String query) async {
     final response =
-    await _client.from(table).select().ilike(nameColumn, '%$query%');
+        await _client.from(table).select().ilike(nameColumn, '%$query%');
     // if (response.error != null) {
     //   throw Exception('Failed to search data: ${response.error!.message}');
     // }
@@ -118,10 +165,10 @@ class ApiHelper {
   }
 
   // Get data with pagination
-  Future<dynamic> getDataWithPagination(String table, int limit,
-      int offset) async {
+  Future<dynamic> getDataWithPagination(
+      String table, int limit, int offset) async {
     final response =
-    await _client.from(table).select().range(offset, offset + limit - 1);
+        await _client.from(table).select().range(offset, offset + limit - 1);
     // if (response.error != null) {
     //   throw Exception('Failed to get data: ${response.error!.message}');
     // }
@@ -158,12 +205,14 @@ class ApiHelper {
   // }
 
   // Join tables and filter by foreign key
-  Future<dynamic> getJoinedData(String mainTable,
-      String foreignTable,
-      String mainTableColumn,
-      String foreignTableColumn,
-      String foreignKey,
-      dynamic keyValue,) async {
+  Future<dynamic> getJoinedData(
+    String mainTable,
+    String foreignTable,
+    String mainTableColumn,
+    String foreignTableColumn,
+    String foreignKey,
+    dynamic keyValue,
+  ) async {
     final response = await _client
         .from(mainTable)
         .select('*, $foreignTable!inner(*)')

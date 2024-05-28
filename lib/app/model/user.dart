@@ -2,16 +2,16 @@ import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
   final int idUser;
-  final String pemilik;
-  final String username;
+  final String nama_toko;
+  final String nama_user;
   final String password;
   final String nomorTelepon;
   final String email;
 
   User({
     required this.idUser,
-    required this.pemilik,
-    required this.username,
+    required this.nama_toko,
+    required this.nama_user,
     required this.password,
     required this.nomorTelepon,
     required this.email,
@@ -20,8 +20,8 @@ class User extends Equatable {
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       idUser: json['id_user'],
-      pemilik: json['pemilik'],
-      username: json['username'],
+      nama_toko: json['nama_toko'],
+      nama_user: json['nama_user'],
       password: json['password'],
       nomorTelepon: json['nomor_telepon'],
       email: json['email'],
@@ -31,8 +31,8 @@ class User extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'id_user': idUser,
-      'pemilik': pemilik,
-      'username': username,
+      'nama_toko': nama_toko,
+      'nama_user': nama_user,
       'password': password,
       'nomor_telepon': nomorTelepon,
       'email': email,

@@ -14,8 +14,35 @@ class MainRepository extends MainDataSource {
   MainRepository(this._apiHelper);
 
   @override
-  Future<supabase.User?> getUserSession() async{
-    supabase.User? userSession = await _apiHelper.getSession();
+  Future<supabase.GoTrueClient> getAuth() async {
+    return _apiHelper.getAuth();
+  }
+
+  @override
+  Future<supabase.GoTrueClient> postUserMagicLink(String email) async {
+    return _apiHelper.postUserMagicLink(email);
+  }
+
+  @override
+  Future<supabase.AuthResponse> postUserSignIn(String email, String password) async {
+    return _apiHelper.postUserLogin(email, password);
+  }
+
+  @override
+  Future<supabase.AuthResponse> postUserSignUp(String email, String password) async {
+    return _apiHelper.postUserRegister(email, password);
+
+  }
+
+  @override
+  Future<void> putUserData(String idUser, String namaToko,String namaUser, String telepon, ) async {
+    return _apiHelper.putUserData(idUser, namaToko, namaUser, telepon);
+  }
+
+
+  @override
+  Future<String?> getUserSessionId() async{
+    String? userSession = await _apiHelper.getSessionId();
     return userSession;
   }
 
@@ -81,6 +108,7 @@ class MainRepository extends MainDataSource {
     await _apiHelper.updateData(
         ApiHelper.TABLE_USER, 'id_user', idUser, user.toJson());
   }
+
 
 
 }

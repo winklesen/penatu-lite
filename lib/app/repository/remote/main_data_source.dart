@@ -13,7 +13,13 @@ abstract class MainDataSource {
   // Future<List<Pesanan>> getAllPesanan();
   // Future<List<DetailPesanan>> getAllDetailPesanan();
 
-  Future<supabase.User?> getUserSession();
+  Future<supabase.GoTrueClient> getAuth();
+  Future<supabase.AuthResponse> postUserSignIn(String email, String password);
+  Future<supabase.AuthResponse> postUserSignUp(String email, String password);
+  Future<void> putUserData(String idUser, String namaToko,String namaUser, String telepon, );
+  Future<supabase.GoTrueClient> postUserMagicLink(String email,);
+
+  Future<String?> getUserSessionId();
   Future<User> getUserDetail(String idUser);
   Future<List<Pesanan>> getPesananByStatus(String status);
   Future<List<DetailPesanan>> getPesananDetail(String idPesanan);

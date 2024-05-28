@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:penatu/ui/styles/theme.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String label;

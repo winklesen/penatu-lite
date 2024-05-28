@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 
 abstract class AuthState extends Equatable {
   @override
@@ -11,11 +12,24 @@ class LoadingAuthState extends AuthState {}
 
 class SuccessEmailLoginAuthState extends AuthState {}
 
-class FailedEmailLoginAuthState extends AuthState {}
+class FailedEmailLoginAuthState extends AuthState {
+  final String message;
 
-class SuccessMagicLinkLoginAuthState extends AuthState {}
+  FailedEmailLoginAuthState( this.message);
+}
 
-class FailedMagicLinkLoginAuthState extends AuthState {}
+class EmailSentLoginAuthState extends AuthState {
+  final GoTrueClient emailClient;
+
+  EmailSentLoginAuthState(this.emailClient);
+}
+
+
+class FailedMagicLinkLoginAuthState extends AuthState {
+  final String message;
+
+  FailedMagicLinkLoginAuthState(this.message);
+}
 
 class ErrorAuthState extends AuthState {
   final String title, message;

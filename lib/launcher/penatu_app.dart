@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penatu/app/bloc/account/account_bloc.dart';
+import 'package:penatu/app/bloc/auth/auth_bloc.dart';
+import 'package:penatu/app/bloc/auth/auth_event.dart';
 import 'package:penatu/app/bloc/dashboard/dashboard_bloc.dart';
 import 'package:penatu/app/bloc/history/history_bloc.dart';
 import 'package:penatu/app/bloc/order/order_bloc.dart';
@@ -10,7 +12,9 @@ import 'package:penatu/app/bloc/theme/theme_event.dart';
 import 'package:penatu/app/bloc/theme/theme_state.dart';
 import 'package:penatu/app/di/injection_container.dart';
 import 'package:penatu/ui/account/account_page.dart';
-import 'package:penatu/ui/auth/auth_page.dart';
+import 'package:penatu/ui/auth/magic_link_auth_page.dart';
+import 'package:penatu/ui/auth/sign_in_page.dart';
+import 'package:penatu/ui/auth/sign_up_page.dart';
 import 'package:penatu/ui/dashboard/dashboard_page.dart';
 import 'package:penatu/ui/history/history_page.dart';
 import 'package:penatu/ui/order/order_page.dart';
@@ -20,8 +24,6 @@ import 'package:penatu/ui/styles/theme.dart';
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-
     /// Init BLoC provider
     /// Provide BLoC to inherited Widget
     ///
@@ -29,6 +31,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => inject<ThemeBloc>()),
         BlocProvider(create: (_) => inject<SplashBloc>()),
+        BlocProvider(create: (_) => inject<AuthBloc>()),
         BlocProvider(create: (_) => inject<DashboardBloc>()),
         BlocProvider(create: (_) => inject<AccountBloc>()),
         BlocProvider(create: (_) => inject<HistoryBloc>()),
@@ -57,7 +60,9 @@ class MyApp extends StatelessWidget {
       initialRoute: SplashPage.routeName,
       routes: {
         SplashPage.routeName: (context) => SplashPage(),
-        AuthPage.routeName: (context) => AuthPage(),
+        SignInPage.routeName: (context) => SignInPage(),
+        SignUpPage.routeName: (context) => SignUpPage(),
+        MagicLinkAuthPage.routeName: (context) => MagicLinkAuthPage(),
         DashboardPage.routeName: (context) => DashboardPage(),
         OrderPage.routeName: (context) => OrderPage(),
         AccountPage.routeName: (context) => AccountPage(),

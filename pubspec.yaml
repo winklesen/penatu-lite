@@ -16,6 +16,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   flutter_svg: ^2.0.10+1
 
+  # Supabase
   supabase_auth_ui: ^0.4.4
   supabase_flutter: ^2.5.3
 
@@ -76,5 +77,4 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/fonts/
-#    - config/
     - .env
