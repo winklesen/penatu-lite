@@ -26,9 +26,7 @@ class _MagicLinkAuthPageState extends State<MagicLinkAuthPage> {
         listener: (context, state) {
           if (state is EmailSentLoginAuthState) {
             dialog(context, 'Email Konfirmasi Terkirim',
-                'Konfirmasi email anda ', true, () {
-
-                });
+                'Konfirmasi email anda ', true, () {});
             state.emailClient.onAuthStateChange.listen((data) {
               final session = data.session;
               if (session != null && mounted) {
@@ -44,10 +42,6 @@ class _MagicLinkAuthPageState extends State<MagicLinkAuthPage> {
           } else if (state is FailedMagicLinkLoginAuthState) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.message)));
-          } else if (state is ErrorAuthState) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.message)));
-            // dialog(context, state.title, state.message, true, () {});
           }
         },
         builder: (context, state) {

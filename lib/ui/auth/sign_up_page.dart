@@ -30,7 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
       // appBar: AppBar(title: Text('Sign Up')),
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is SuccessEmailLoginAuthState) {
+          if (state is SuccessEmailRegisterAuthState) {
             dialog(context, 'Success', 'Register Successful', false, () {
               Navigator.pushNamedAndRemoveUntil(
                 context,
@@ -38,11 +38,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 (route) => false,
               );
             });
-          } else if (state is FailedEmailLoginAuthState) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.message)));
-          } else if (state is ErrorAuthState) {
-            dialog(context, state.title, state.message, true, () {});
           }
         },
         builder: (context, state) {

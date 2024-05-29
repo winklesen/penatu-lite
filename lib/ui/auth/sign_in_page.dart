@@ -37,12 +37,14 @@ class _SignInPageState extends State<SignInPage> {
           if (state is SuccessEmailLoginAuthState) {
             dialog(context, 'Success', 'Login Successful', false, () {
               Navigator.pushNamedAndRemoveUntil(
-                context, DashboardPage.routeName,(route) => false,);
+                context,
+                DashboardPage.routeName,
+                (route) => false,
+              );
             });
           } else if (state is FailedEmailLoginAuthState) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.message)));
-
           } else if (state is ErrorAuthState) {
             dialog(context, state.title, state.message, true, () {});
           }

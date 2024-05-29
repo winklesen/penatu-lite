@@ -12,10 +12,12 @@ class LoadingAuthState extends AuthState {}
 
 class SuccessEmailLoginAuthState extends AuthState {}
 
+class SuccessEmailRegisterAuthState extends AuthState {}
+
 class FailedEmailLoginAuthState extends AuthState {
   final String message;
 
-  FailedEmailLoginAuthState( this.message);
+  FailedEmailLoginAuthState(this.message);
 }
 
 class EmailSentLoginAuthState extends AuthState {
@@ -23,7 +25,6 @@ class EmailSentLoginAuthState extends AuthState {
 
   EmailSentLoginAuthState(this.emailClient);
 }
-
 
 class FailedMagicLinkLoginAuthState extends AuthState {
   final String message;

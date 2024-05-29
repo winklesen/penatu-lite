@@ -26,7 +26,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       emit(LoadingSplashState());
 
       GoTrueClient auth = await _mainRepository.getAuth();
-      
+
       if (auth.currentUser == null) {
         emit(EmptySessionSplashState());
       } else {

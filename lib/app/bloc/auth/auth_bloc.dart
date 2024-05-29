@@ -39,7 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (responseSignUp.user != null) {
         await _mainRepository.putUserData(responseSignUp.user!.id,
             user.nama_toko, user.nama_user, user.nomorTelepon);
-        emit(SuccessEmailLoginAuthState());
+        emit(SuccessEmailRegisterAuthState());
       } else {
         emit(FailedEmailLoginAuthState(errorTitle));
       }
