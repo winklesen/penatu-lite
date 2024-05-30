@@ -5,6 +5,6 @@ abstract class AccountEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetUserAccount extends AccountEvent {
+class GetUserAccount extends AccountEvent {}
 
-}
+class LogOut extends AccountEvent {}

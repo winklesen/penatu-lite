@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penatu/app/bloc/account/account_state.dart';
 
 import 'package:penatu/app/bloc/account/account_event.dart';
+import 'package:penatu/app/model/user.dart';
 import 'package:penatu/app/repository/local/local_data_source.dart';
 import 'package:penatu/app/repository/remote/main_data_source.dart';
 
@@ -14,6 +15,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<GetUserAccount>((event, emit) async {
       await _mapGetUserAccountToState();
     });
+    on<LogOut>((event, emit) async {
+      await _mapLogOutToState();
+    });
   }
 
   dispose() {
@@ -24,7 +28,19 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     try {
       emit(LoadingAccountState());
 
-      emit(LoadedAccountState());
+      User userSession = await _mainRepository.getUserSessionData();
+
+      emit(LoadedAccountState(userSession));
+    } catch (e, stackTrace) {
+      emit(ErrorAccountState('Terjadi Kesalahan', e.toString()));
+    }
+  }
+
+  Future<void> _mapLogOutToState() async {
+    try {
+      emit(LoadingAccountState());
+      await _mainRepository.signOut();
+      emit(SignedOutAccountState());
     } catch (e, stackTrace) {
       emit(ErrorAccountState('Terjadi Kesalahan', e.toString()));
     }

@@ -6,3 +6,9 @@ abstract class DashboardEvent extends Equatable {
 }
 
 class GetUserDashboard extends DashboardEvent {}
+
+class SetPricePerKilo extends DashboardEvent {
+  int price;
+
+  SetPricePerKilo(this.price);
+}

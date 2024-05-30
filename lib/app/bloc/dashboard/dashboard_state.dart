@@ -9,17 +9,20 @@ abstract class DashboardState extends Equatable {
 
 class InitialDashboardState extends DashboardState {}
 
-class LoadingDashboardState extends DashboardState {
+class LoadingDashboardState extends DashboardState {}
 
-
-
-}
 class LoadedDashboardState extends DashboardState {
-
   final User userSession;
   final List<Pesanan> listPesanan;
+  final int pricePerKilo;
 
-  LoadedDashboardState(this.userSession, this.listPesanan);
+  LoadedDashboardState(this.userSession, this.listPesanan, this.pricePerKilo);
+}
+
+class KiloUpdatedDashboardState extends DashboardState {
+  final int pricePerKilo;
+
+  KiloUpdatedDashboardState(this.pricePerKilo);
 }
 
 class ErrorDashboardState extends DashboardState {

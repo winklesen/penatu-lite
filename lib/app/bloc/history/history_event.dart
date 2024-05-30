@@ -5,4 +5,6 @@ abstract class HistoryEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetUserHistory extends HistoryEvent {}
+class GetOrderHistory extends HistoryEvent {
+
+}

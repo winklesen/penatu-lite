@@ -9,7 +9,7 @@ class InitialOrderState extends OrderState {}
 
 class LoadingOrderState extends OrderState {}
 
-class LoadedOrderState extends OrderState {}
+class SubmittedOrderState extends OrderState {}
 
 class ErrorOrderState extends OrderState {
   final String title, message;
