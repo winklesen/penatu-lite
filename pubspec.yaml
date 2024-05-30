@@ -34,6 +34,8 @@ dependencies:
   flutter_bloc: ^8.1.5
   equatable: ^2.0.5
   get_it: ^7.7.0
+  animations: ^2.0.11
+  flutter_staggered_animations: ^1.1.1
 
 flutter_native_splash:
   color: "#ffffff"
