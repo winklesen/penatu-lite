@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class DetailPesanan extends Equatable {
-  final int idDetailPesanan;
-  final int idPesanan;
+  final String idDetailPesanan;
+  final String idPesanan;
   final String namaDetailPesanan;
   final double berat;
   final int jumlah;
