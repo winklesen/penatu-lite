@@ -1,40 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:penatu/app/bloc/account/account_bloc.dart';
-import 'package:penatu/app/bloc/account/account_state.dart';
-import 'package:penatu/app/model/user.dart';
+import 'package:penatu/app/bloc/order_detail/order_detail_bloc.dart';
+import 'package:penatu/app/bloc/order_detail/order_detail_state.dart';
+import 'package:penatu/app/model/pesanan.dart';
 
-class AccountPage extends StatefulWidget {
-  static const String routeName = '/account';
+class OrderDetailPage extends StatefulWidget {
+  static const String routeName = '/order.detail';
 
-  const AccountPage({super.key});
+  final Pesanan? selectedOrder;
+
+  const OrderDetailPage({
+    super.key,
+    this.selectedOrder,
+  });
 
   @override
-  State<AccountPage> createState() => _AccountPageState();
+  State<OrderDetailPage> createState() => _OrderDetailPageState();
 }
 
-class _AccountPageState extends State<AccountPage> {
-  User? userSession;
-
+class _OrderDetailPageState extends State<OrderDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Account'),
-      ),
       body: SafeArea(
-        child: BlocConsumer<AccountBloc, AccountState>(
-          listener: (context, state) {
-            if (state is LoadedAccountState) {
-              this.userSession = state.userSession;
-            } else if (state is ErrorAccountState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.message)),
-              );
-            }
-          },
+        child: BlocConsumer<OrderDetailBloc, OrderDetailState>(
+          listener: (context, state) {},
           builder: (context, state) {
-            if (state is LoadingAccountState) {
+            if (state is LoadingOrderDetailState) {
               return Center(child: CircularProgressIndicator());
             }
             return LayoutBuilder(
@@ -49,7 +41,7 @@ class _AccountPageState extends State<AccountPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text('List')
+                          Text('${this.widget.selectedOrder?.namaPelanggan}')
                           // Expanded(
                           //   child: ListView.builder(
                           //     itemCount: listPesanan.length,

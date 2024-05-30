@@ -133,7 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               final user = User(
-                                idUser: 0,
+                                idUser: '',
                                 nama_toko: _namaTokoController.text,
                                 nama_user: _usernameController.text,
                                 password: _passwordController.text,
