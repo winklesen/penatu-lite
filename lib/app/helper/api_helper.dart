@@ -31,7 +31,7 @@ class ApiHelper {
 
   Future<AuthResponse> postUserLogin(String email, String password) async {
     return _client.auth.signInWithPassword(email: email, password: password);
-    //   AuthException
+    //   AuthException TODO remove
   }
 
   Future<AuthResponse> postUserRegister(String email, String password) async {
@@ -79,6 +79,27 @@ class ApiHelper {
     ;
   }
 
+  Future<void> signOut() async {
+    await _client.auth.signOut();
+  }
+
+  Future<UserResponse> putUserAuth(String? email, String? password) async {
+    UserResponse response = await _client.auth.updateUser(
+        UserAttributes(
+          email: email,
+          password: password,
+        ),
+        emailRedirectTo: email);
+
+    await _client.from(TABLE_USER).update({
+      'email': response.user?.email,
+      // 'password': password , TODO need hash
+    }).eq('id_user', response.user!.id);
+
+    await _client.auth.refreshSession();
+    return response;
+  }
+
   // Generic CRUD operations
   // Create
   Future<void> insertData(String table, Map<String, dynamic> data) async {
@@ -108,6 +129,22 @@ class ApiHelper {
     // if (response.error != null) {
     //   throw Exception('Failed to get data with where clause: ${response.error!.message}');
     // }
+    return response;
+  }
+
+  Future<dynamic> getWhereDataById(
+    String table,
+    String idName,
+    dynamic idValue,
+    String columnName,
+    dynamic columnValue,
+  ) async {
+    final response = await _client
+        .from(table)
+        .select()
+        .eq(idName, idValue)
+        .eq(columnName, columnValue);
+
     return response;
   }
 
