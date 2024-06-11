@@ -36,6 +36,10 @@ dependencies:
   get_it: ^7.7.0
   animations: ^2.0.11
   flutter_staggered_animations: ^1.1.1
+  fl_chart: ^0.68.0
+  dynamic_color: ^1.7.0
+  modal_bottom_sheet: ^3.0.0
+  dotted_border: ^2.1.0
 
 flutter_native_splash:
   color: "#ffffff"
