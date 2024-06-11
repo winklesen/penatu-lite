@@ -163,17 +163,17 @@ class ApiHelper {
   Future<void> updateData(String table, String idColumn, dynamic id,
       Map<String, dynamic> data) async {
     final response = await _client.from(table).update(data).eq(idColumn, id);
-    if (response.error != null) {
-      throw Exception('Failed to update data: ${response.error!.message}');
-    }
+    // if (response.error != null) {
+    //   throw Exception('Failed to update data: ${response.error!.message}');
+    // }
   }
 
   // Delete
   Future<void> deleteData(String table, String idColumn, dynamic id) async {
     final response = await _client.from(table).delete().eq(idColumn, id);
-    if (response.error != null) {
-      throw Exception('Failed to delete data: ${response.error!.message}');
-    }
+    // if (response.error != null) {
+    //   throw Exception('Failed to delete data: ${response.error!.message}');
+    // }
   }
 
   // Specific methods for your tables

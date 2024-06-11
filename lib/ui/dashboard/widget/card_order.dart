@@ -17,7 +17,8 @@ class _CardOrderState extends State<CardOrder> {
 
   Color _getStatusColor() {
     if (this.widget.pesanan.status == 'done') return StatusColor.done;
-    if (this.widget.pesanan.status == 'pending') return StatusColor.onProgress;
+    if (this.widget.pesanan.status == 'on_progress')
+      return StatusColor.onProgress;
     return StatusColor.pending;
   }
 

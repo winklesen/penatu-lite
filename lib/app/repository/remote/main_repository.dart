@@ -112,7 +112,6 @@ class MainRepository extends MainDataSource {
         ApiHelper.TABLE_PESANAN_DETAIL, detailPesanan.toJson());
   }
 
-  //  post first. if suceed then ya know
   @override
   Future<void> postPesanan(Pesanan pesanan) async {
     await _apiHelper.insertData(ApiHelper.TABLE_PESANAN, pesanan.toJson());
