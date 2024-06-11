@@ -9,7 +9,6 @@ class SharedPrefHelper {
   SharedPrefHelper({required this.preferences});
 
   static const _THEME = "theme";
-  // static const _USER_ID = "userId";
   static const _KILO_PRICE = "kiloPrice";
 
   Future setDarkTheme(bool value) async {
@@ -19,14 +18,6 @@ class SharedPrefHelper {
   Future<bool> getValueDarkTheme() async {
     return preferences.getBool(_THEME) ?? false;
   }
-
-  // Future saveValueUserId(String value) async {
-  //   preferences.setString(_USER_ID, value);
-  // }
-  //
-  // Future<String> getValueUserId() async {
-  //   return preferences.getString(_THEME) ?? '';
-  // }  
 
   Future setKiloPrice(double value) async {
     preferences.setDouble(_KILO_PRICE, value);

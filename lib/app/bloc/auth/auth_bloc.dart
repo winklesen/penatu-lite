@@ -13,7 +13,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc(this._mainRepository, this._localRepository)
       : super(InitialAuthState()) {
-
     on<SignUpEmail>((event, emit) async {
       await _mapSignUpEmailToState(event.user);
     });
@@ -56,9 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (response.user != null) {
         emit(SuccessEmailLoginAuthState());
       } else {
-        emit(FailedEmailLoginAuthState(
-          errorTitle
-        ));
+        emit(FailedEmailLoginAuthState(errorTitle));
       }
     } catch (e, stackTrace) {
       emit(ErrorAuthState(errorTitle, e.toString()));
@@ -69,10 +66,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       emit(LoadingAuthState());
 
-      var response =  await _mainRepository.postUserMagicLink(email);
+      var response = await _mainRepository.postUserMagicLink(email);
       emit(EmailSentLoginAuthState(response));
-
-
     } catch (e, stackTrace) {
       emit(ErrorAuthState(errorTitle, e.toString()));
     }

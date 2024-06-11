@@ -105,9 +105,6 @@ class ApiHelper {
   // Create
   Future<void> insertData(String table, Map<String, dynamic> data) async {
     final response = await _client.from(table).insert(data);
-    // if (response.error != null) {
-    //   throw Exception('Failed to insert data: ${response.error!.message}');
-    // }
   }
 
   // Read - Get all records
@@ -127,9 +124,6 @@ class ApiHelper {
   ) async {
     final response =
         await _client.from(table).select().eq(columnName, columnValue);
-    // if (response.error != null) {
-    //   throw Exception('Failed to get data with where clause: ${response.error!.message}');
-    // }
     return response;
   }
 
@@ -151,11 +145,7 @@ class ApiHelper {
 
   // Read - Get a single record by ID
   Future<dynamic> getDataById(String table, String idColumn, dynamic id) async {
-    final response =
-        await _client.from(table).select().eq(idColumn, id);
-    // if (response.error != null) {
-    //   throw Exception('Failed to get data: ${response.error!.message}');
-    // }
+    final response = await _client.from(table).select().eq(idColumn, id);
     return response;
   }
 
@@ -163,17 +153,11 @@ class ApiHelper {
   Future<void> updateData(String table, String idColumn, dynamic id,
       Map<String, dynamic> data) async {
     final response = await _client.from(table).update(data).eq(idColumn, id);
-    // if (response.error != null) {
-    //   throw Exception('Failed to update data: ${response.error!.message}');
-    // }
   }
 
   // Delete
   Future<void> deleteData(String table, String idColumn, dynamic id) async {
     final response = await _client.from(table).delete().eq(idColumn, id);
-    // if (response.error != null) {
-    //   throw Exception('Failed to delete data: ${response.error!.message}');
-    // }
   }
 
   // Specific methods for your tables
@@ -185,9 +169,7 @@ class ApiHelper {
         .select()
         .order(col, ascending: isAscending)
         .limit(limit);
-    // if (response.error != null) {
-    //   throw Exception('Failed to get orders: ${response.error!.message}');
-    // }
+
     return response;
   }
 
@@ -196,9 +178,7 @@ class ApiHelper {
       String table, String nameColumn, String query) async {
     final response =
         await _client.from(table).select().ilike(nameColumn, '%$query%');
-    // if (response.error != null) {
-    //   throw Exception('Failed to search data: ${response.error!.message}');
-    // }
+
     return response;
   }
 
@@ -207,9 +187,7 @@ class ApiHelper {
       String table, int limit, int offset) async {
     final response =
         await _client.from(table).select().range(offset, offset + limit - 1);
-    // if (response.error != null) {
-    //   throw Exception('Failed to get data: ${response.error!.message}');
-    // }
+
     return response;
   }
 

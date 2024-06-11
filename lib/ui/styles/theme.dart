@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// theming
+// Theming
 class AppTheme {
+
   static final Color primaryColor = const Color(0xFF699BF7);
 
   static ThemeData _lightTheme = ThemeData.light(useMaterial3: true).copyWith(
-    colorScheme:
-        ColorScheme.light(primary: primaryColor, onPrimary: primaryColor),
+    colorScheme: ColorScheme.light(
+      primary: primaryColor,
+      onPrimary: primaryColor,
+    ),
   );
 
   static ThemeData _darkTheme = ThemeData.dark(useMaterial3: true).copyWith(

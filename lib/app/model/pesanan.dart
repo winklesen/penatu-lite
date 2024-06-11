@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class Pesanan extends Equatable {
-    String? idPesanan;
-    String? idUser;
+  String? idPesanan;
+  String? idUser;
   final String namaPelanggan;
   final String nomorTeleponPelanggan;
   final String tanggalPemesanan;
@@ -11,8 +11,8 @@ class Pesanan extends Equatable {
   final String catatan;
 
   Pesanan({
-     this.idPesanan,
-     this.idUser,
+    this.idPesanan,
+    this.idUser,
     required this.namaPelanggan,
     required this.nomorTeleponPelanggan,
     required this.tanggalPemesanan,

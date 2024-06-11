@@ -2,8 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penatu/app/bloc/theme/theme_event.dart';
 import 'package:penatu/app/bloc/theme/theme_state.dart';
 
-
 import 'package:penatu/app/helper/pref_helper.dart';
+
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   final SharedPrefHelper prefHelper;
 

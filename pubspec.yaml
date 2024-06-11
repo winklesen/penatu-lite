@@ -11,35 +11,48 @@ dependencies:
   flutter:
     sdk: flutter
 
+  ## UI
+  # Icon
   google_fonts: ^6.2.1
   cupertino_icons: ^1.0.6
   font_awesome_flutter: ^10.7.0
   flutter_svg: ^2.0.10+1
 
+  # Widget
+  fl_chart: ^0.68.0
+  modal_bottom_sheet: ^3.0.0
+  dotted_border: ^2.1.0
+
+  # Helper
+  image: ^4.2.0
+#  cached_network_image: ^3.3.1
+#  animations: ^2.0.11
+#  flutter_staggered_animations: ^1.1.1
+#  dynamic_color: ^1.7.0
+
+  ##  Network
+
   # Supabase
   supabase_auth_ui: ^0.4.4
   supabase_flutter: ^2.5.3
 
-  flutter_dotenv: ^5.1.0
-
-  intl: ^0.19.0
-
-  image: ^4.2.0
-  cached_network_image: ^3.3.1
-
+  # API Fetch
   http: ^1.2.1
+
+  # Local Storage
   shared_preferences: ^2.2.3
 
-  logger: ^2.3.0
+  # env
+  flutter_dotenv: ^5.1.0
+
+  # State Management
   flutter_bloc: ^8.1.5
-  equatable: ^2.0.5
+
+  # Helper
   get_it: ^7.7.0
-  animations: ^2.0.11
-  flutter_staggered_animations: ^1.1.1
-  fl_chart: ^0.68.0
-  dynamic_color: ^1.7.0
-  modal_bottom_sheet: ^3.0.0
-  dotted_border: ^2.1.0
+  intl: ^0.19.0
+  logger: ^2.3.0
+  equatable: ^2.0.5
 
 flutter_native_splash:
   color: "#ffffff"

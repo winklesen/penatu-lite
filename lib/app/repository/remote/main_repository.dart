@@ -1,5 +1,4 @@
 import 'package:penatu/app/helper/api_helper.dart';
-import 'package:penatu/app/helper/log_helper.dart';
 import 'package:penatu/app/model/detail_pesanan.dart';
 import 'package:penatu/app/model/pesanan.dart';
 import 'package:penatu/app/model/user.dart';
@@ -74,21 +73,6 @@ class MainRepository extends MainDataSource {
     );
     return response.map<Pesanan>((json) => Pesanan.fromJson(json)).toList();
   }
-
-  // @override
-  // Future<DetailPesanan> getPesananDetail(String idPesanan) async {
-  //   final response = await _apiHelper.getJoinedData(
-  //     ApiHelper.TABLE_PESANAN,
-  //     ApiHelper.TABLE_PESANAN_DETAIL,
-  //     'id_pesanan',
-  //     'id_pesanan',
-  //     'id_pesanan',
-  //     idPesanan,
-  //   );
-  //   return response
-  //       .map<DetailPesanan>((json) => DetailPesanan.fromJson(json))
-  //       .toList();
-  // }
 
   @override
   Future<List<DetailPesanan>> getPesananDetail(String idPesanan) async {
