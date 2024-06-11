@@ -26,12 +26,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     this.close();
   }
 
-  Future<void> _mapSetPricePerKiloToState(int price) async {
+  Future<void> _mapSetPricePerKiloToState(double price) async {
     try {
       emit(LoadingDashboardState());
 
       await _localRepository.setKiloPrice(price);
-      int newPrice = await _localRepository.getKiloPrice();
+      double newPrice = await _localRepository.getKiloPrice();
 
       emit(KiloUpdatedDashboardState(newPrice));
     } catch (e, stackTrace) {
@@ -46,9 +46,21 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       User userSession = await _mainRepository.getUserSessionData();
       List<Pesanan> listPesanan =
           await _mainRepository.getPesananByStatus(userSession.idUser);
-      int pricePerKilo = await _localRepository.getKiloPrice();
+      double pricePerKilo = await _localRepository.getKiloPrice();
 
-      emit(LoadedDashboardState(userSession, listPesanan, pricePerKilo));
+      double totalDone = 0;
+      double totalPending = 0;
+      double totalOnProgress = 0;
+
+      for (var i = 0; i < listPesanan.length; i++) {
+        String status = listPesanan[i].status;
+        if (status == 'done') totalDone++;
+        if (status == 'pending') totalPending++;
+        if (status == 'on_progress') totalOnProgress++;
+      }
+
+      emit(LoadedDashboardState(userSession, listPesanan, totalDone,
+          totalPending, totalOnProgress, pricePerKilo));
     } catch (e, stackTrace) {
       emit(ErrorDashboardState(errorTitle, e.toString()));
     }

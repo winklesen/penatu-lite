@@ -14,13 +14,15 @@ class LoadingDashboardState extends DashboardState {}
 class LoadedDashboardState extends DashboardState {
   final User userSession;
   final List<Pesanan> listPesanan;
-  final int pricePerKilo;
+  final double totalDone, totalPending, totalOnProgress;
+  final double pricePerKilo;
 
-  LoadedDashboardState(this.userSession, this.listPesanan, this.pricePerKilo);
+  LoadedDashboardState(this.userSession, this.listPesanan, this.totalDone,
+      this.totalPending, this.totalOnProgress, this.pricePerKilo);
 }
 
 class KiloUpdatedDashboardState extends DashboardState {
-  final int pricePerKilo;
+  final double pricePerKilo;
 
   KiloUpdatedDashboardState(this.pricePerKilo);
 }

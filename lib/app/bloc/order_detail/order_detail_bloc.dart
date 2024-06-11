@@ -23,12 +23,23 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
     this.close();
   }
 
-  Future<void> _mapGetOrderDetailToState(String orderId) async {
+  Future<void> _mapGetOrderDetailToState(
+    String orderId,
+  ) async {
     try {
       emit(LoadingOrderDetailState());
+
+      // Get detail Pesanan
       List<DetailPesanan> response =
-      await _mainRepository.getPesananDetail(orderId);
-      emit(LoadedOrderDetailState(response));
+          await _mainRepository.getPesananDetail(orderId);
+
+      // Hitung Harga
+      double totalPrice = 0;
+      for (var i = 0; i < response.length; i++) {
+        totalPrice += response[i].harga;
+      }
+
+      emit(LoadedOrderDetailState(response, totalPrice));
     } catch (e, stackTrace) {
       emit(ErrorOrderDetailState('Terjadi Kesalahan', e.toString()));
     }

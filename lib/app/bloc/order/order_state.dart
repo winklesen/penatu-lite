@@ -7,7 +7,13 @@ abstract class OrderState extends Equatable {
 
 class InitialOrderState extends OrderState {}
 
-class LoadingOrderState extends OrderState {}
+class LoadingOrderState extends OrderState {  }
+
+class LoadedOrderState extends OrderState {
+  final double kiloPrice;
+
+  LoadedOrderState(this.kiloPrice);
+}
 
 class SubmittedOrderState extends OrderState {}
 

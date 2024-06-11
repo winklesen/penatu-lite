@@ -7,6 +7,10 @@ abstract class OrderEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class GetOrderForm extends OrderEvent {
+
+}
+
 class PostUserOrder extends OrderEvent {
   final Pesanan pesanan;
   final  List<DetailPesanan> listDetail;

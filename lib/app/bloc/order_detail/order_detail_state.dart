@@ -13,8 +13,9 @@ class LoadingOrderDetailState extends OrderDetailState {}
 
 class LoadedOrderDetailState extends OrderDetailState {
   final List<DetailPesanan> listPesananDetail;
+  final double totalPrice;
 
-  LoadedOrderDetailState(this.listPesananDetail);
+  LoadedOrderDetailState(this.listPesananDetail, this.totalPrice);
 }
 
 class UpdatedOrderDetailState extends OrderDetailState {
