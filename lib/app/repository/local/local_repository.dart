@@ -12,8 +12,8 @@ class LocalRepository extends LocalDataSource {
   }
 
   @override
-  Future<int> getKiloPrice() async {
-    return await _prefHelper.getValueKiloPrice();
+  Future<double> getKiloPrice() async {
+    return await _prefHelper.getValueKiloPrice() ?? 0;
   }
 
   @override
@@ -22,7 +22,7 @@ class LocalRepository extends LocalDataSource {
   }
 
   @override
-  Future<void> setKiloPrice(int value) async {
+  Future<void> setKiloPrice(double value) async {
     await _prefHelper.setKiloPrice(value);
   }
 }

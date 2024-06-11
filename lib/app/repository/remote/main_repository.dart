@@ -1,4 +1,5 @@
 import 'package:penatu/app/helper/api_helper.dart';
+import 'package:penatu/app/helper/log_helper.dart';
 import 'package:penatu/app/model/detail_pesanan.dart';
 import 'package:penatu/app/model/pesanan.dart';
 import 'package:penatu/app/model/user.dart';
@@ -62,9 +63,15 @@ class MainRepository extends MainDataSource {
 
   @override
   Future<List<Pesanan>> getPesananByStatus(String idUser,
-      [String? status]) async {
-    final response = await _apiHelper.getWhereDataById(ApiHelper.TABLE_PESANAN,
-        'id_user', idUser, 'status', '%${status}%' ?? '%%');
+      [String? status = '']) async {
+    status = '%${status}%';
+    final response = await _apiHelper.getWhereDataById(
+      ApiHelper.TABLE_PESANAN,
+      'id_user',
+      idUser,
+      'status',
+      status,
+    );
     return response.map<Pesanan>((json) => Pesanan.fromJson(json)).toList();
   }
 
