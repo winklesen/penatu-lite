@@ -6,6 +6,7 @@ import 'package:penatu/app/bloc/auth/auth_state.dart';
 import 'package:penatu/ui/auth/magic_link_auth_page.dart';
 import 'package:penatu/ui/auth/sign_up_page.dart';
 import 'package:penatu/ui/dashboard/dashboard_page.dart';
+import 'package:penatu/ui/styles/button.dart';
 import 'package:penatu/ui/styles/dialog.dart';
 
 class SignInPage extends StatefulWidget {
@@ -18,6 +19,7 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  late ThemeData _theme;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -31,6 +33,8 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    _theme = Theme.of(context);
+
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -53,19 +57,28 @@ class _SignInPageState extends State<SignInPage> {
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/icons/ic_launcher.png',
-                  height: 100,
+                Center(
+                  child: Image.asset(
+                    'assets/icons/ic_launcher.png',
+                    height: 120,
+                  ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 18),
+                Text(
+                  'Sign In',
+                  style: _theme.textTheme.displayMedium,
+                ),
+                SizedBox(height: 18),
                 Form(
                   key: _formKey,
                   child: Column(
                     children: [
                       TextFormField(
                         controller: _emailController,
+                        textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
                           labelText: 'Email',
                           border: OutlineInputBorder(),
@@ -77,7 +90,7 @@ class _SignInPageState extends State<SignInPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 8),
                       TextFormField(
                         controller: _passwordController,
                         decoration: InputDecoration(
@@ -92,13 +105,15 @@ class _SignInPageState extends State<SignInPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 18),
                       if (state is LoadingAuthState)
                         CircularProgressIndicator(),
                       if (state is! LoadingAuthState)
                         Column(
                           children: [
-                            ElevatedButton(
+                            PrimaryButton(
+                              label: 'Sign In',
+                              isFullWidth: true,
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   context.read<AuthBloc>().add(SignInEmail(
@@ -107,26 +122,25 @@ class _SignInPageState extends State<SignInPage> {
                                       ));
                                 }
                               },
-                              child: Text(
-                                'Sign In',
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor),
-                              ),
                             ),
-                            TextButton(
+                            SecondaryButton(
+                              label: 'Sign Up',
+                              isFullWidth: true,
                               onPressed: () {
                                 Navigator.pushNamed(
                                     context, SignUpPage.routeName);
                               },
-                              child: Text('Sign Up'),
                             ),
-                            TextButton(
+                            SizedBox(
+                              height: 8,
+                            ),
+                            _divider(),
+                            CustomTextButton(
+                              label: 'Sign In with Magic Link',
                               onPressed: () {
                                 Navigator.pushNamed(
                                     context, MagicLinkAuthPage.routeName);
                               },
-                              child: Text('Sign In with Magic Link'),
                             ),
                           ],
                         ),
@@ -140,11 +154,18 @@ class _SignInPageState extends State<SignInPage> {
       ),
     );
   }
+
+  // Widget
+  Widget _divider() {
+    return Row(
+      children: [
+        Expanded(child: Divider()),
+        Text(
+          '  or  ',
+          style: _theme.textTheme.bodySmall,
+        ),
+        Expanded(child: Divider()),
+      ],
+    );
+  }
 }
-/*
-begin
-  insert into public.user(id_user, nama_toko,nama_user,password,nomer_telepon, email)
-        values(new.id, new.raw_user_meta_data->>'nama_toko',new.raw_user_meta_data->>'nama_user',new.encrypted_password,new.raw_user_meta_data->>'nomer_telepon',new.raw_user_meta_data->>'email' );
-  return new;
-end;
-*/

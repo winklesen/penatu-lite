@@ -5,6 +5,7 @@ import 'package:penatu/app/bloc/auth/auth_event.dart';
 import 'package:penatu/app/bloc/auth/auth_state.dart';
 import 'package:penatu/app/model/user.dart';
 import 'package:penatu/ui/dashboard/dashboard_page.dart';
+import 'package:penatu/ui/styles/button.dart';
 import 'package:penatu/ui/styles/dialog.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -17,6 +18,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  late ThemeData _theme;
   final TextEditingController _namaTokoController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -26,6 +28,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    _theme = Theme.of(context);
+
     return Scaffold(
       // appBar: AppBar(title: Text('Sign Up')),
       body: BlocConsumer<AuthBloc, AuthState>(
@@ -44,19 +48,28 @@ class _SignUpPageState extends State<SignUpPage> {
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/icons/ic_launcher.png',
-                  height: 100,
+                Center(
+                  child: Image.asset(
+                    'assets/icons/ic_launcher.png',
+                    height: 120,
+                  ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 18),
+                Text(
+                  'Sign Up',
+                  style: _theme.textTheme.displayMedium,
+                ),
+                SizedBox(height: 18),
                 Form(
                   key: _formKey,
                   child: Column(
                     children: [
                       TextFormField(
                         controller: _namaTokoController,
+                        textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
                           labelText: 'Nama Toko',
                           border: OutlineInputBorder(),
@@ -68,9 +81,10 @@ class _SignUpPageState extends State<SignUpPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 8),
                       TextFormField(
                         controller: _usernameController,
+                        textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
                           labelText: 'Nama Pemilik',
                           border: OutlineInputBorder(),
@@ -82,9 +96,39 @@ class _SignUpPageState extends State<SignUpPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 8),
                       TextFormField(
-                        controller: _passwordController,
+                        controller: _nomorTeleponController,
+                        textInputAction: TextInputAction.next,
+                        decoration: InputDecoration(
+                          labelText: 'Nomor Telepon',
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your nomor telepon';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        controller: _emailController,
+                        textInputAction: TextInputAction.next,
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
                           labelText: 'Password',
                           border: OutlineInputBorder(),
@@ -97,39 +141,13 @@ class _SignUpPageState extends State<SignUpPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10),
-                      TextFormField(
-                        controller: _nomorTeleponController,
-                        decoration: InputDecoration(
-                          labelText: 'Nomor Telepon',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your nomor telepon';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 18),
                       if (state is LoadingAuthState)
                         CircularProgressIndicator(),
                       if (state is! LoadingAuthState)
-                        ElevatedButton(
+                        PrimaryButton(
+                          label: 'Sign Up',
+                          isFullWidth: true,
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               final user = User(
@@ -145,12 +163,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                   .add(SignUpEmail(user: user));
                             }
                           },
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor),
-                          ),
                         ),
                     ],
                   ),

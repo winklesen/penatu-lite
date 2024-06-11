@@ -11,7 +11,8 @@ void dialog(BuildContext context, String title, String subtitle, bool isDismiss,
         content: Text(subtitle),
         actions: [
           TextButton(
-            onPressed: (){
+            onPressed: () {
+              Navigator.pop(context);
               onPressed();
             },
             child: Text('Tutup'),

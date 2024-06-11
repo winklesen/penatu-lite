@@ -4,6 +4,7 @@ import 'package:penatu/app/bloc/auth/auth_bloc.dart';
 import 'package:penatu/app/bloc/auth/auth_state.dart';
 import 'package:penatu/app/bloc/auth/auth_event.dart';
 import 'package:penatu/ui/dashboard/dashboard_page.dart';
+import 'package:penatu/ui/styles/button.dart';
 import 'package:penatu/ui/styles/dialog.dart';
 
 class MagicLinkAuthPage extends StatefulWidget {
@@ -16,11 +17,14 @@ class MagicLinkAuthPage extends StatefulWidget {
 }
 
 class _MagicLinkAuthPageState extends State<MagicLinkAuthPage> {
+  late ThemeData _theme;
   final TextEditingController _emailController = TextEditingController();
   final bool isDialogShow = false;
 
   @override
   Widget build(BuildContext context) {
+    _theme = Theme.of(context);
+
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -51,13 +55,21 @@ class _MagicLinkAuthPageState extends State<MagicLinkAuthPage> {
           return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/icons/ic_launcher.png',
-                    height: 100,
+                  Center(
+                    child: Image.asset(
+                      'assets/icons/ic_launcher.png',
+                      height: 120,
+                    ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 18),
+                  Text(
+                    'Sign In',
+                    style: _theme.textTheme.displayMedium,
+                  ),
+                  SizedBox(height: 18),
                   TextField(
                     controller: _emailController,
                     decoration: InputDecoration(
@@ -67,7 +79,9 @@ class _MagicLinkAuthPageState extends State<MagicLinkAuthPage> {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   SizedBox(height: 16),
-                  ElevatedButton(
+                  PrimaryButton(
+                    label: 'Sign In',
+                    isFullWidth: true,
                     onPressed: () {
                       final email = _emailController.text;
                       if (email.isNotEmpty) {
@@ -79,11 +93,6 @@ class _MagicLinkAuthPageState extends State<MagicLinkAuthPage> {
                             SnackBar(content: Text('Masukan email')));
                       }
                     },
-                    child: Text(
-                      'Send Magic Link',
-                      style: TextStyle(
-                          color: Theme.of(context).scaffoldBackgroundColor),
-                    ),
                   ),
                 ],
               ));
