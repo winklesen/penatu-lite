@@ -5,6 +5,7 @@ import 'package:penatu/app/bloc/auth/auth_bloc.dart';
 import 'package:penatu/app/bloc/dashboard/dashboard_bloc.dart';
 import 'package:penatu/app/bloc/history/history_bloc.dart';
 import 'package:penatu/app/bloc/order/order_bloc.dart';
+import 'package:penatu/app/bloc/order_detail/order_detail_bloc.dart';
 import 'package:penatu/app/bloc/splash/splash_bloc.dart';
 import 'package:penatu/app/bloc/theme/theme_bloc.dart';
 import 'package:penatu/app/helper/api_helper.dart';
@@ -28,6 +29,7 @@ Future<void> init() async {
   inject.registerFactory(() => AccountBloc(inject(), inject()));
   inject.registerFactory(() => HistoryBloc(inject(), inject()));
   inject.registerFactory(() => OrderBloc(inject(), inject()));
+  inject.registerFactory(() => OrderDetailBloc(inject(), inject()));
 
   /// Local
   SharedPrefHelper pref =

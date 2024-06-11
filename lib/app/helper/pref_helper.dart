@@ -28,11 +28,11 @@ class SharedPrefHelper {
   //   return preferences.getString(_THEME) ?? '';
   // }  
 
-  Future setKiloPrice(int value) async {
-    preferences.setInt(_KILO_PRICE, value);
+  Future setKiloPrice(double value) async {
+    preferences.setDouble(_KILO_PRICE, value);
   }
 
-  Future<int> getValueKiloPrice() async {
-    return preferences.getInt(_KILO_PRICE) ?? 0;
+  Future<double> getValueKiloPrice() async {
+    return preferences.getDouble(_KILO_PRICE) ?? 0;
   }
 }

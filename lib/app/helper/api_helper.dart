@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:penatu/app/model/user.dart' as model;
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ApiHelper {
@@ -10,7 +11,7 @@ class ApiHelper {
 
   static const TABLE_USER = "user";
   static const TABLE_PESANAN = "pesanan";
-  static const TABLE_PESANAN_DETAIL = "pesanan_detail";
+  static const TABLE_PESANAN_DETAIL = "detail_pesanan";
 
   ApiHelper(this._client);
 
@@ -104,9 +105,9 @@ class ApiHelper {
   // Create
   Future<void> insertData(String table, Map<String, dynamic> data) async {
     final response = await _client.from(table).insert(data);
-    if (response.error != null) {
-      throw Exception('Failed to insert data: ${response.error!.message}');
-    }
+    // if (response.error != null) {
+    //   throw Exception('Failed to insert data: ${response.error!.message}');
+    // }
   }
 
   // Read - Get all records
@@ -143,7 +144,7 @@ class ApiHelper {
         .from(table)
         .select()
         .eq(idName, idValue)
-        .eq(columnName, columnValue);
+        .ilike(columnName, columnValue);
 
     return response;
   }
@@ -151,7 +152,7 @@ class ApiHelper {
   // Read - Get a single record by ID
   Future<dynamic> getDataById(String table, String idColumn, dynamic id) async {
     final response =
-        await _client.from(table).select().eq(idColumn, id).single();
+        await _client.from(table).select().eq(idColumn, id);
     // if (response.error != null) {
     //   throw Exception('Failed to get data: ${response.error!.message}');
     // }
