@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class DetailPesanan extends Equatable {
   final String idDetailPesanan;
-  final String idPesanan;
+  String idPesanan;
   final String namaDetailPesanan;
   final double berat;
   final int jumlah;
@@ -21,19 +21,19 @@ class DetailPesanan extends Equatable {
 
   factory DetailPesanan.fromJson(Map<String, dynamic> json) {
     return DetailPesanan(
-      idDetailPesanan: json['id_detail_pesanan'],
-      idPesanan: json['id_pesanan'],
-      namaDetailPesanan: json['nama_detail_pesanan'],
-      berat: json['berat'],
-      jumlah: json['jumlah'],
-      harga: json['harga'],
-      tipeLayanan: json['tipe_layanan'],
+      idDetailPesanan: json['id_detail_pesanan'] ?? '',
+      idPesanan: json['id_pesanan'] ?? '',
+      namaDetailPesanan: json['nama_detail_pesanan'] ?? '',
+      berat: double.parse(json['berat'].toString()) ?? 0,
+      jumlah: json['jumlah'] ?? 1,
+      harga: double.parse(json['harga'].toString()) ?? 0,
+      tipeLayanan: json['tipe_layanan'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id_detail_pesanan': idDetailPesanan,
+      // 'id_detail_pesanan': idDetailPesanan,
       'id_pesanan': idPesanan,
       'nama_detail_pesanan': namaDetailPesanan,
       'berat': berat,
