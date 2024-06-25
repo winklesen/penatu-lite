@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:penatu/app/utils/constants.dart';
 
 // Theming
 class AppTheme {
@@ -65,4 +66,13 @@ class StatusColor {
   static final Color done = AppTheme.primaryColor;
   static final Color onProgress = const Color(0xFFFED519);
   static final Color pending = const Color(0xFF013281);
+}
+
+Color getStatusColor(String status){
+  if(status == STATUS_DONE)
+    return StatusColor.done;
+  if(status == STATUS_ON_PROGRESS)
+    return StatusColor.onProgress;
+
+  return StatusColor.pending;
 }

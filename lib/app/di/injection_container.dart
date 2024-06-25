@@ -1,9 +1,11 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:penatu/app/bloc/account/account_bloc.dart';
 import 'package:penatu/app/bloc/auth/auth_bloc.dart';
 import 'package:penatu/app/bloc/dashboard/dashboard_bloc.dart';
 import 'package:penatu/app/bloc/history/history_bloc.dart';
+import 'package:penatu/app/bloc/main_bloc_observer.dart';
 import 'package:penatu/app/bloc/order/order_bloc.dart';
 import 'package:penatu/app/bloc/order_detail/order_detail_bloc.dart';
 import 'package:penatu/app/bloc/splash/splash_bloc.dart';
@@ -19,8 +21,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 final inject = GetIt.instance;
 
+/// Injection Container
+/// where boilerplate registered, & meet each other
 Future<void> init() async {
+
   /// Bloc
+  Bloc.observer = MainBlocObserver();
   inject.registerFactory(() => ThemeBloc(prefHelper: inject()));
   inject.registerFactory(() => SplashBloc(inject(), inject()));
   inject.registerFactory(() => AuthBloc(inject(), inject()));

@@ -44,19 +44,25 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       emit(LoadingDashboardState());
 
       User userSession = await _mainRepository.getUserSessionData();
+
+      /// Get User Pesanan
       List<Pesanan> listPesanan =
           await _mainRepository.getPesananByStatus(userSession.idUser);
+      listPesanan = listPesanan.reversed.toList();
+
+      /// Get price (kg)
       double pricePerKilo = await _localRepository.getKiloPrice();
 
       double totalDone = 0;
       double totalPending = 0;
       double totalOnProgress = 0;
 
+      /// Count Pesanan status
       for (var i = 0; i < listPesanan.length; i++) {
         String status = listPesanan[i].status;
-        if (status == 'done') totalDone++;
-        if (status == 'pending') totalPending++;
-        if (status == 'on_progress') totalOnProgress++;
+        if (status == STATUS_DONE) totalDone++;
+        if (status == STATUS_PENDING) totalPending++;
+        if (status == STATUS_ON_PROGRESS) totalOnProgress++;
       }
 
       emit(LoadedDashboardState(userSession, listPesanan, totalDone,

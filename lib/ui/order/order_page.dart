@@ -10,6 +10,7 @@ import 'package:penatu/app/bloc/order/order_state.dart';
 import 'package:penatu/app/helper/currency_helper.dart';
 import 'package:penatu/app/model/detail_pesanan.dart';
 import 'package:penatu/app/model/pesanan.dart';
+import 'package:penatu/app/utils/constants.dart';
 import 'package:penatu/ui/dashboard/dashboard_page.dart';
 import 'package:penatu/ui/dashboard/widget/card_detail_order.dart';
 import 'package:penatu/ui/styles/button.dart';
@@ -271,7 +272,7 @@ class _OrderPageState extends State<OrderPage> {
                                                     .format(DateTime.now()),
                                             tanggalPengembalian:
                                                 _tanggalDiambilController.text,
-                                            status: 'pending',
+                                            status: STATUS_PENDING,
                                             catatan: _catatanController.text);
                                         context.read<OrderBloc>().add(
                                             PostUserOrder(

@@ -38,42 +38,35 @@ class CardDetailOrder extends StatelessWidget {
       ),
       subtitle: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.checkroom,
-                size: 12,
-                color: _theme.colorScheme.secondary,
-              ),
-              SizedBox(
-                width: 2,
-              ),
-              Text(
-                '${data.jumlah} Item',
-                style: _theme.textTheme.bodySmall,
-              ),
-              SizedBox(
-                width: 12,
-              ),
-              Icon(
-                Icons.scale_rounded,
-                size: 12,
-                color: _theme.colorScheme.secondary,
-              ),
-              SizedBox(
-                width: 2,
-              ),
-              Text(
-                '${data.berat ?? '-'} Kg',
-                style: _theme.textTheme.bodySmall,
-              ),
-            ],
-          )
+        children: [
+          Icon(
+            Icons.checkroom,
+            size: 12,
+            color: _theme.colorScheme.secondary,
+          ),
+          SizedBox(
+            width: 2,
+          ),
+          Text(
+            '${data.jumlah} Item',
+            style: _theme.textTheme.bodySmall,
+          ),
+          SizedBox(
+            width: 12,
+          ),
+          Icon(
+            Icons.scale_rounded,
+            size: 12,
+            color: _theme.colorScheme.secondary,
+          ),
+          SizedBox(
+            width: 2,
+          ),
+          Text(
+            '${data.berat ?? '-'} Kg',
+            style: _theme.textTheme.bodySmall,
+          ),
         ],
       ),
       trailing: Text(

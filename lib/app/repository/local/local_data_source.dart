@@ -1,5 +1,6 @@
-/// This is interface for every app event
-/// Especially get data from local db
+/// LocalDataSource (interface)
+/// store local storage / db related
+/// just the abstract function
 abstract class LocalDataSource {
   Future<void> setKiloPrice(double value);
 

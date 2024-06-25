@@ -1,6 +1,8 @@
 import 'package:penatu/app/helper/pref_helper.dart';
 import 'package:penatu/app/repository/local/local_data_source.dart';
 
+/// LocalDataRepository
+/// implement the data source contract
 class LocalRepository extends LocalDataSource {
   final SharedPrefHelper _prefHelper;
 

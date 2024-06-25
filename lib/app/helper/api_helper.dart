@@ -5,8 +5,10 @@ import 'package:penatu/app/model/user.dart' as model;
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+
+/// API Helper
+/// contain list of API calls
 class ApiHelper {
-  // static const sessionKey = "SESSION_KEY";
   final SupabaseClient _client;
 
   static const TABLE_USER = "user";
@@ -191,36 +193,7 @@ class ApiHelper {
     return response;
   }
 
-  // Complex queries with filters and sorting
-  // Future<List<Map<String, dynamic>>> getFilteredAndSortedData(
-  //   String table,
-  //   Map<String, dynamic> filters,
-  //   Map<String, bool> sorting,
-  // ) async {
-  // var query = _client.from(table).select();
-  //
-  // // Applying filters
-  // filters.forEach((key, value) {
-  //   if (value is String) {
-  //     query = query.ilike(key, '%$value%');
-  //   } else {
-  //     query = query.eq(key, value);
-  //   }
-  // });
-  //
-  // // Applying sorting
-  // sorting.forEach((key, ascending) {
-  //   query = query.order(key, ascending: ascending);
-  // });
-  //
-  // final response = await query;
-  // if (response.error != null) {
-  //   throw Exception('Failed to get data: ${response.error!.message}');
-  // }
-  // return List<Map<String, dynamic>>.from(response.data);
-  // }
 
-  // Join tables and filter by foreign key
   Future<dynamic> getJoinedData(
     String mainTable,
     String foreignTable,
@@ -238,6 +211,37 @@ class ApiHelper {
     // }
     return response;
   }
+
+// Complex queries with filters and sorting
+// Future<List<Map<String, dynamic>>> getFilteredAndSortedData(
+//   String table,
+//   Map<String, dynamic> filters,
+//   Map<String, bool> sorting,
+// ) async {
+// var query = _client.from(table).select();
+//
+// // Applying filters
+// filters.forEach((key, value) {
+//   if (value is String) {
+//     query = query.ilike(key, '%$value%');
+//   } else {
+//     query = query.eq(key, value);
+//   }
+// });
+//
+// // Applying sorting
+// sorting.forEach((key, ascending) {
+//   query = query.order(key, ascending: ascending);
+// });
+//
+// final response = await query;
+// if (response.error != null) {
+//   throw Exception('Failed to get data: ${response.error!.message}');
+// }
+// return List<Map<String, dynamic>>.from(response.data);
+// }
+
+// Join tables and filter by foreign key
 
 // Advanced join and filter operation
 // Future<List<Map<String, dynamic>>> getAdvancedJoinData({

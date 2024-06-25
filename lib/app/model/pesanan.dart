@@ -7,7 +7,7 @@ class Pesanan extends Equatable {
   final String nomorTeleponPelanggan;
   final String tanggalPemesanan;
   final String tanggalPengembalian;
-  final String status;
+   String status;
   final String catatan;
 
   Pesanan({

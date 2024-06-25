@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penatu/app/bloc/account/account_bloc.dart';
 import 'package:penatu/app/bloc/auth/auth_bloc.dart';
-
 import 'package:penatu/app/bloc/dashboard/dashboard_bloc.dart';
 import 'package:penatu/app/bloc/history/history_bloc.dart';
 import 'package:penatu/app/bloc/order/order_bloc.dart';
@@ -12,7 +11,6 @@ import 'package:penatu/app/bloc/theme/theme_bloc.dart';
 import 'package:penatu/app/bloc/theme/theme_event.dart';
 import 'package:penatu/app/bloc/theme/theme_state.dart';
 import 'package:penatu/app/di/injection_container.dart';
-import 'package:penatu/app/utils/constants.dart';
 import 'package:penatu/app/utils/constants.dart';
 import 'package:penatu/ui/account/account_page.dart';
 import 'package:penatu/ui/auth/magic_link_auth_page.dart';
@@ -26,10 +24,11 @@ import 'package:penatu/ui/splash/splash_page.dart';
 import 'package:penatu/ui/styles/theme.dart';
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    /// Init BLoC provider
-    /// Provide BLoC to inherited Widget
+
+    /// Register the business logic (bloc) class
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => inject<ThemeBloc>()), // TODO REMOVE
@@ -48,7 +47,7 @@ class MyApp extends StatelessWidget {
   }
 
   Widget _buildWithTheme(BuildContext context, ThemeState state) {
-    // context.select((ThemeBloc themeBloc) => themeBloc.add(GetTheme())); TODO REMOVE
+    // context.select((ThemeBloc themeBloc) => themeBloc.add(GetTheme()));  TODO REMOVE
 
     /// Root Widget
     return MaterialApp(
@@ -60,9 +59,10 @@ class MyApp extends StatelessWidget {
       showSemanticsDebugger: false,
       theme: AppTheme.getLightTheme(),
       darkTheme: AppTheme.getDarkTheme(),
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.system, /// Adaptive by system
       initialRoute: SplashPage.routeName,
       routes: {
+        /// Register every page routename
         SplashPage.routeName: (context) => SplashPage(),
         SignInPage.routeName: (context) => SignInPage(),
         SignUpPage.routeName: (context) => SignUpPage(),

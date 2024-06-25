@@ -8,16 +8,16 @@ import 'package:penatu/launcher/penatu_app.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Bloc.observer = MainBlocObserver();
+  /// Inject Dependency
   await di.init();
 
-  SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-
-    /// lock the orientation
+  SystemChrome.setPreferredOrientations([
+    /// Lock the orientation to portrait mode
     DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown
+    DeviceOrientation.portraitDown,
   ]).then((_) => runApp(MyApp()));
 }
 
-// TODO filter tanggal
+// X filter tanggal
+// TODO modify pie card pesanan
 // TODO modify pie chart

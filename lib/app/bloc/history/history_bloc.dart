@@ -25,8 +25,10 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       emit(LoadingHistoryState());
 
       String? userId = await _mainRepository.getUserSessionId();
-      final List<Pesanan> response =
+      List<Pesanan> response =
           await _mainRepository.getPesananByStatus(userId!);
+
+      response = response.reversed.toList();
       emit(LoadedHistoryState(response));
     } catch (e, stackTrace) {
       emit(ErrorHistoryState('Terjadi Kesalahan', e.toString()));

@@ -22,6 +22,12 @@ class _MagicLinkAuthPageState extends State<MagicLinkAuthPage> {
   final bool isDialogShow = false;
 
   @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _theme = Theme.of(context);
 
@@ -58,46 +64,57 @@ class _MagicLinkAuthPageState extends State<MagicLinkAuthPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Center(
-                    child: Image.asset(
-                      'assets/icons/ic_launcher.png',
-                      height: 120,
-                    ),
-                  ),
+                  _buildImageLogo(),
                   SizedBox(height: 18),
                   Text(
                     'Sign In',
                     style: _theme.textTheme.displayMedium,
                   ),
                   SizedBox(height: 18),
-                  TextField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
+                  _buildInputEmail(),
                   SizedBox(height: 16),
-                  PrimaryButton(
-                    label: 'Sign In',
-                    isFullWidth: true,
-                    onPressed: () {
-                      final email = _emailController.text;
-                      if (email.isNotEmpty) {
-                        context
-                            .read<AuthBloc>()
-                            .add(SignInMagicLink(email: email));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Masukan email')));
-                      }
-                    },
-                  ),
+                  _buildFormButton(),
                 ],
               ));
         },
       ),
+    );
+  }
+
+  // Widget
+  Widget _buildImageLogo() {
+    return Center(
+      child: Image.asset(
+        'assets/icons/ic_launcher.png',
+        height: 120,
+      ),
+    );
+  }
+
+  Widget _buildInputEmail() {
+    return TextField(
+      controller: _emailController,
+      decoration: InputDecoration(
+        labelText: 'Email',
+        border: OutlineInputBorder(),
+      ),
+      keyboardType: TextInputType.emailAddress,
+    );
+  }
+
+  Widget _buildFormButton() {
+    return PrimaryButton(
+      label: 'Sign In',
+      isFullWidth: true,
+      onPressed: () {
+        final email = _emailController.text;
+        if (email.isNotEmpty) {
+          context.read<AuthBloc>().add(SignInMagicLink(email: email));
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('Masukan email')));
+        }
+      },
     );
   }
 }

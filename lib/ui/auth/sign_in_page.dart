@@ -60,93 +60,14 @@ class _SignInPageState extends State<SignInPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(
-                  child: Image.asset(
-                    'assets/icons/ic_launcher.png',
-                    height: 120,
-                  ),
-                ),
+                _buildImageLogo(),
                 SizedBox(height: 18),
                 Text(
                   'Sign In',
                   style: _theme.textTheme.displayMedium,
                 ),
                 SizedBox(height: 18),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: _emailController,
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          border: OutlineInputBorder(),
-                        ),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 18),
-                      if (state is LoadingAuthState)
-                        CircularProgressIndicator(),
-                      if (state is! LoadingAuthState)
-                        Column(
-                          children: [
-                            PrimaryButton(
-                              label: 'Sign In',
-                              isFullWidth: true,
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  context.read<AuthBloc>().add(SignInEmail(
-                                        email: _emailController.text,
-                                        password: _passwordController.text,
-                                      ));
-                                }
-                              },
-                            ),
-                            SecondaryButton(
-                              label: 'Sign Up',
-                              isFullWidth: true,
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, SignUpPage.routeName);
-                              },
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            _divider(),
-                            CustomTextButton(
-                              label: 'Sign In with Magic Link',
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, MagicLinkAuthPage.routeName);
-                              },
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
+                _buildSignInForm(state),
               ],
             ),
           );
@@ -156,6 +77,57 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   // Widget
+  Widget _buildImageLogo() {
+    return Center(
+      child: Image.asset(
+        'assets/icons/ic_launcher.png',
+        height: 120,
+      ),
+    );
+  }
+
+  Widget _buildSignInForm(AuthState state) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            controller: _emailController,
+            textInputAction: TextInputAction.next,
+            decoration: InputDecoration(
+              labelText: 'Email',
+              border: OutlineInputBorder(),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your email';
+              }
+              return null;
+            },
+          ),
+          SizedBox(height: 8),
+          TextFormField(
+            controller: _passwordController,
+            decoration: InputDecoration(
+              labelText: 'Password',
+              border: OutlineInputBorder(),
+            ),
+            obscureText: true,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your password';
+              }
+              return null;
+            },
+          ),
+          SizedBox(height: 18),
+          if (state is LoadingAuthState) CircularProgressIndicator(),
+          if (state is! LoadingAuthState) _buildFormButton(),
+        ],
+      ),
+    );
+  }
+
   Widget _divider() {
     return Row(
       children: [
@@ -165,6 +137,42 @@ class _SignInPageState extends State<SignInPage> {
           style: _theme.textTheme.bodySmall,
         ),
         Expanded(child: Divider()),
+      ],
+    );
+  }
+
+  Widget _buildFormButton() {
+    return Column(
+      children: [
+        PrimaryButton(
+          label: 'Sign In',
+          isFullWidth: true,
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              context.read<AuthBloc>().add(SignInEmail(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                  ));
+            }
+          },
+        ),
+        SecondaryButton(
+          label: 'Sign Up',
+          isFullWidth: true,
+          onPressed: () {
+            Navigator.pushNamed(context, SignUpPage.routeName);
+          },
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        _divider(),
+        CustomTextButton(
+          label: 'Sign In with Magic Link',
+          onPressed: () {
+            Navigator.pushNamed(context, MagicLinkAuthPage.routeName);
+          },
+        ),
       ],
     );
   }

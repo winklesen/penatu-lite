@@ -110,6 +110,7 @@ class _DonutChartState extends State<DonutChart> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Indicator(
+                      value: this.widget.done.toInt(),
                       color: StatusColor.done,
                       text: 'Done',
                       isSquare: false,
@@ -118,6 +119,7 @@ class _DonutChartState extends State<DonutChart> {
                       height: 4,
                     ),
                     Indicator(
+                      value: this.widget.onProgress.toInt(),
                       color: StatusColor.onProgress,
                       text: 'On Progress',
                       isSquare: false,
@@ -126,6 +128,7 @@ class _DonutChartState extends State<DonutChart> {
                       height: 4,
                     ),
                     Indicator(
+                      value: this.widget.pending.toInt(),
                       color: StatusColor.pending,
                       text: 'Pending',
                       isSquare: false,
@@ -142,6 +145,7 @@ class _DonutChartState extends State<DonutChart> {
 class Indicator extends StatelessWidget {
   const Indicator({
     super.key,
+    required this.value,
     required this.color,
     required this.text,
     required this.isSquare,
@@ -149,6 +153,7 @@ class Indicator extends StatelessWidget {
     this.textColor,
   });
 
+  final int value;
   final Color color;
   final String text;
   final bool isSquare;
@@ -177,7 +182,17 @@ class Indicator extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: textColor,
           ),
-        )
+        ),
+
+        // Text(
+        //   '${value}',
+        //   style: TextStyle(
+        //     fontSize: 14,
+        //     fontWeight: FontWeight.bold,
+        //     color: textColor,
+        //   ),
+        // ),
+
       ],
     );
   }

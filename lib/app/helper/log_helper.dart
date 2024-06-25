@@ -1,6 +1,6 @@
 import 'package:logger/logger.dart';
 
-/// Debug Helper
+/// DebugHelper
 var log = Logger(
   filter: null, // Use the default LogFilter (-> only log in debug mode)
   output: null, // Use the default LogOutput (-> send everything to console)

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:penatu/app/bloc/dashboard/dashboard_bloc.dart';
 import 'package:penatu/app/bloc/dashboard/dashboard_event.dart';
 import 'package:penatu/app/bloc/dashboard/dashboard_state.dart';
+import 'package:penatu/app/helper/currency_helper.dart';
 import 'package:penatu/app/model/pesanan.dart';
 import 'package:penatu/app/model/user.dart';
+import 'package:penatu/app/utils/constants.dart';
 import 'package:penatu/ui/account/account_page.dart';
 import 'package:penatu/ui/dashboard/widget/card_order.dart';
 import 'package:penatu/ui/dashboard/widget/dialog_input.dart';
@@ -25,58 +27,43 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   User? userSession;
-  late List<Pesanan> listPesanan;
-  late double pricePerKilo, totalDone, totalPending, totalOnProgress;
+  List<Pesanan> listPesanan = [];
+  double pricePerKilo = 0;
+  double totalDone = 0;
+  double totalPending = 0;
+  double totalOnProgress = 0;
   late ThemeData _theme;
+  String filterStatus = 'All';
+  bool isAscending = false;
 
   @override
   void initState() {
     super.initState();
-    listPesanan = [];
-    pricePerKilo = 0;
-    totalDone = 0;
-    totalPending = 0;
-    totalOnProgress = 0;
     context.read<DashboardBloc>().add(GetUserDashboard());
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     _theme = Theme.of(context);
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: _theme.colorScheme.primary,
-        label: Text(
-          'Add Pesanan',
-          style: _theme.textTheme.bodyMedium
-              ?.copyWith(color: _theme.colorScheme.surface),
-        ),
-        icon: Icon(Icons.add,
-            color: _theme.colorScheme.surface, size: _theme.iconTheme.size),
-        onPressed: () {
-          Navigator.pushNamed(context, OrderPage.routeName);
-        },
-      ),
+      floatingActionButton: _buildButtonPesanan(),
       body: SafeArea(
         child: BlocConsumer<DashboardBloc, DashboardState>(
           listener: (context, state) {
             if (state is LoadedDashboardState) {
-              this.userSession = state.userSession;
-              this.listPesanan = state.listPesanan;
-              this.pricePerKilo = state.pricePerKilo;
-              this.totalDone = state.totalDone;
-              this.totalPending = state.totalPending;
-              this.totalOnProgress = state.totalOnProgress;
-              setState(() {});
+              setState(() {
+                userSession = state.userSession;
+                listPesanan = state.listPesanan;
+                pricePerKilo = state.pricePerKilo;
+                totalDone = state.totalDone;
+                totalPending = state.totalPending;
+                totalOnProgress = state.totalOnProgress;
+              });
             } else if (state is KiloUpdatedDashboardState) {
-              this.pricePerKilo = state.pricePerKilo;
+              setState(() {
+                pricePerKilo = state.pricePerKilo;
+              });
               dialog(context, 'Success', 'Data telah tersimpan', true, () {});
             } else if (state is ErrorDashboardState) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -98,8 +85,9 @@ class _DashboardPageState extends State<DashboardPage> {
                     primary: true,
                     physics: AlwaysScrollableScrollPhysics(),
                     child: ConstrainedBox(
-                        constraints:
-                            BoxConstraints(maxHeight: constraints.maxHeight),
+                        constraints: BoxConstraints(
+                            minHeight: constraints.maxHeight,
+                            maxHeight: constraints.maxHeight),
                         child: Padding(
                           padding: EdgeInsets.only(
                               left: 16, top: 0, right: 16, bottom: 0),
@@ -114,15 +102,8 @@ class _DashboardPageState extends State<DashboardPage> {
                               const SizedBox(height: 8),
                               _cardKiloPrice(),
                               _textOrder(),
-                              Expanded(
-                                  child: ListView.builder(
-                                primary: false,
-                                shrinkWrap: true,
-                                itemCount: listPesanan.length,
-                                itemBuilder: (context, index) {
-                                  return CardOrder(listPesanan[index]);
-                                },
-                              )),
+                              const SizedBox(height: 8),
+                              buildOrderList(),
                             ],
                           ),
                         )),
@@ -137,48 +118,99 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   // Widget
-  Widget _cardStat() {
-    return DonutChart(totalDone, totalOnProgress, totalPending);
+  Widget _buildButtonPesanan() {
+    return FloatingActionButton.extended(
+      backgroundColor: _theme.colorScheme.primary,
+      label: Text(
+        'Add Pesanan',
+        style: _theme.textTheme.bodyMedium
+            ?.copyWith(color: _theme.colorScheme.surface),
+      ),
+      icon: Icon(Icons.add,
+          color: _theme.colorScheme.surface, size: _theme.iconTheme.size),
+      onPressed: () {
+        if(pricePerKilo < 1){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Input harga per Kg')),
+          );
+          return;
+        }
+        Navigator.pushNamed(context, OrderPage.routeName);
+      },
+    );
   }
 
-  Widget _cardKiloPrice() {
-    return pricePerKilo > 1
-        ? GestureDetector(
-            onTap: () {
-              dialogInputKiloPrice(context, pricePerKilo);
-            },
-            child: Card(
-              child: ListTile(
-                leading: Icon(
-                  Icons.info_outline,
-                  size: _theme.iconTheme.size,
-                  color: _theme.colorScheme.secondary,
+  Widget buildOrderList() {
+    List<Pesanan> filteredList = _getFilteredOrders();
+    List<Pesanan> sortedList = _sortOrders(filteredList);
+    return Expanded(
+        child: sortedList.isEmpty
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(
+                    height: 24,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                  Lottie.asset(
+                    'assets/anims/empty_whale.json',
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    fit: BoxFit.fill,
+                  ),
+                  Text(
+                    'Data Pesanan Kosong',
+                    style: _theme.textTheme.bodyMedium
+                        ?.copyWith(color: Colors.black.withOpacity(0.5)),
+                  ),
+                ],
+              )
+            : ShaderMask(
+                shaderCallback: (Rect rect) {
+                  return LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      _theme.primaryColor,
+                      Colors.transparent,
+                      Colors.transparent,
+                      _theme.primaryColor,
+                    ],
+                    stops: [
+                      0.0,
+                      0.025,
+                      0.905,
+                      1.0
+                    ], // 10% purple, 80% transparent, 10% purple
+                  ).createShader(rect);
+                },
+                blendMode: BlendMode.dstOut,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  primary: false,
+                  // physics: const NeverScrollableScrollPhysics(),
+                  itemCount: sortedList.length,
+                  itemBuilder: (context, index) {
+                    return CardOrder(sortedList[index]);
+                  },
                 ),
-                title: Text('Harga Per Kg Rp. $pricePerKilo'),
-                subtitle: Text('Ketuk untuk merubah'),
-                isThreeLine: false,
-              ),
-            ),
-          )
-        : GestureDetector(
-            onTap: () {
-              dialogInputKiloPrice(
-                context,
-              );
-            },
-            child: Card(
-              child: ListTile(
-                leading: Icon(
-                  Icons.info_outline,
-                  size: _theme.iconTheme.size,
-                  color: _theme.colorScheme.secondary,
-                ),
-                title: Text('Pengingat'),
-                subtitle: Text('Tentukan harga per Kg untuk memulai transaksi'),
-                isThreeLine: false,
-              ),
-            ),
-          );
+              ));
+  }
+
+  List<Pesanan> _getFilteredOrders() {
+    if (filterStatus == 'All') {
+      return listPesanan;
+    }
+    return listPesanan.where((order) => order.status == filterStatus).toList();
+  }
+
+  List<Pesanan> _sortOrders(List<Pesanan> orders) {
+    orders.sort((a, b) {
+      int compare = a.tanggalPemesanan.compareTo(b.tanggalPemesanan);
+      return isAscending ? compare : -compare;
+    });
+    return orders;
   }
 
   Widget _textGreetings() {
@@ -192,21 +224,15 @@ class _DashboardPageState extends State<DashboardPage> {
           surfaceTintColor: Colors.transparent,
           actions: [
             IconButton(
-              icon: Icon(
-                Icons.history_outlined,
-                color: _theme.iconTheme.color,
-                size: _theme.iconTheme.size,
-              ),
+              icon: Icon(Icons.history_outlined,
+                  color: _theme.iconTheme.color, size: _theme.iconTheme.size),
               onPressed: () {
                 Navigator.pushNamed(context, HistoryPage.routeName);
               },
             ),
             IconButton(
-              icon: Icon(
-                Icons.person_outline,
-                color: _theme.iconTheme.color,
-                size: _theme.iconTheme.size,
-              ),
+              icon: Icon(Icons.person_outline,
+                  color: _theme.iconTheme.color, size: _theme.iconTheme.size),
               onPressed: () {
                 Navigator.pushNamed(context, AccountPage.routeName);
               },
@@ -230,6 +256,33 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
+  Widget _cardStat() {
+    return DonutChart(totalDone, totalOnProgress, totalPending);
+  }
+
+  Widget _cardKiloPrice() {
+    return GestureDetector(
+      onTap: () {
+        dialogInputKiloPrice(context, pricePerKilo);
+      },
+      child: Card(
+        child: ListTile(
+          leading: Icon(
+            Icons.info_outline,
+            size: _theme.iconTheme.size,
+            color: _theme.colorScheme.secondary,
+          ),
+          title: Text(pricePerKilo > 1
+              ? 'Harga Per Kg ${CurrencyFormat.convertToIdr(number: pricePerKilo)}'
+              : 'Pengingat'),
+          subtitle: Text(pricePerKilo > 1
+              ? 'Ketuk untuk merubah'
+              : 'Tentukan harga per Kg untuk memulai transaksi'),
+        ),
+      ),
+    );
+  }
+
   Widget _textOrder() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -240,10 +293,35 @@ class _DashboardPageState extends State<DashboardPage> {
           'My Order',
           style: _theme.textTheme.headlineSmall,
         ),
-        IconButton(
+        PopupMenuButton<String>(
           icon: Icon(Icons.sort, size: _theme.iconTheme.size),
-          onPressed: () {},
-        )
+          onSelected: (value) {
+            setState(() {
+              if (value == 'Sort Ascending') {
+                isAscending = true;
+              } else if (value == 'Sort Descending') {
+                isAscending = false;
+              } else {
+                filterStatus = value;
+              }
+            });
+          },
+          itemBuilder: (context) {
+            return <String>[
+              'Sort Ascending',
+              'Sort Descending',
+              'All',
+              STATUS_PENDING,
+              STATUS_ON_PROGRESS,
+              STATUS_DONE
+            ]
+                .map((option) => PopupMenuItem(
+                      value: option,
+                      child: Text(option),
+                    ))
+                .toList();
+          },
+        ),
       ],
     );
   }

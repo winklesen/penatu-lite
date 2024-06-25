@@ -27,6 +27,16 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void dispose() {
+    _namaTokoController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _nomorTeleponController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _theme = Theme.of(context);
 
@@ -51,122 +61,14 @@ class _SignUpPageState extends State<SignUpPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(
-                  child: Image.asset(
-                    'assets/icons/ic_launcher.png',
-                    height: 120,
-                  ),
-                ),
+                _buildImageLogo(),
                 SizedBox(height: 18),
                 Text(
                   'Sign Up',
                   style: _theme.textTheme.displayMedium,
                 ),
                 SizedBox(height: 18),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: _namaTokoController,
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          labelText: 'Nama Toko',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter namaToko';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        controller: _usernameController,
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          labelText: 'Nama Pemilik',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter username';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        controller: _nomorTeleponController,
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          labelText: 'Nomor Telepon',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your nomor telepon';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        controller: _emailController,
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 8),
-                      TextFormField(
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          border: OutlineInputBorder(),
-                        ),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 18),
-                      if (state is LoadingAuthState)
-                        CircularProgressIndicator(),
-                      if (state is! LoadingAuthState)
-                        PrimaryButton(
-                          label: 'Sign Up',
-                          isFullWidth: true,
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              final user = User(
-                                idUser: '',
-                                nama_toko: _namaTokoController.text,
-                                nama_user: _usernameController.text,
-                                password: _passwordController.text,
-                                nomorTelepon: _nomorTeleponController.text,
-                                email: _emailController.text,
-                              );
-                              context
-                                  .read<AuthBloc>()
-                                  .add(SignUpEmail(user: user));
-                            }
-                          },
-                        ),
-                    ],
-                  ),
-                ),
+                _buildSignUpForm(state),
               ],
             ),
           );
@@ -175,13 +77,141 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  @override
-  void dispose() {
-    _namaTokoController.dispose();
-    _usernameController.dispose();
-    _passwordController.dispose();
-    _nomorTeleponController.dispose();
-    _emailController.dispose();
-    super.dispose();
+  // Widget
+  Widget _buildImageLogo() {
+    return Center(
+      child: Image.asset(
+        'assets/icons/ic_launcher.png',
+        height: 120,
+      ),
+    );
+  }
+
+  Widget _buildSignUpForm(AuthState state) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          _buildInputName(),
+          SizedBox(height: 8),
+          _buildInputUsername(),
+          SizedBox(height: 8),
+          _buildInputPhone(),
+          SizedBox(height: 8),
+          _buildInputEmail(),
+          SizedBox(height: 8),
+          _buildInputPassword(),
+          SizedBox(height: 18),
+          if (state is LoadingAuthState) CircularProgressIndicator(),
+          if (state is! LoadingAuthState) _buildFormButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInputName() {
+    return TextFormField(
+      controller: _namaTokoController,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        labelText: 'Nama Toko',
+        border: OutlineInputBorder(),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter namaToko';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildInputUsername() {
+    return TextFormField(
+      controller: _usernameController,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        labelText: 'Nama Pemilik',
+        border: OutlineInputBorder(),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter username';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildInputPhone() {
+    return TextFormField(
+      controller: _nomorTeleponController,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        labelText: 'Nomor Telepon',
+        border: OutlineInputBorder(),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your nomor telepon';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildInputEmail() {
+    return TextFormField(
+      controller: _emailController,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        labelText: 'Email',
+        border: OutlineInputBorder(),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your email';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildInputPassword() {
+    return TextFormField(
+      controller: _passwordController,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        labelText: 'Password',
+        border: OutlineInputBorder(),
+      ),
+      obscureText: true,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your password';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildFormButton() {
+    return PrimaryButton(
+      label: 'Sign Up',
+      isFullWidth: true,
+      onPressed: () {
+        if (_formKey.currentState!.validate()) {
+          final user = User(
+            idUser: '',
+            nama_toko: _namaTokoController.text,
+            nama_user: _usernameController.text,
+            password: _passwordController.text,
+            nomorTelepon: _nomorTeleponController.text,
+            email: _emailController.text,
+          );
+          context.read<AuthBloc>().add(SignUpEmail(user: user));
+        }
+      },
+    );
   }
 }

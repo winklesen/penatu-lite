@@ -33,11 +33,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _mapSignUpEmailToState(User user) async {
     try {
       emit(LoadingAuthState());
+
+      /// Post username & pw
       final supabase.AuthResponse responseSignUp =
           await _mainRepository.postUserSignUp(user.email, user.password);
+
       if (responseSignUp.user != null) {
+
+        /// when user created, update the remaining column
         await _mainRepository.putUserData(responseSignUp.user!.id,
             user.nama_toko, user.nama_user, user.nomorTelepon);
+
         emit(SuccessEmailRegisterAuthState());
       } else {
         emit(FailedEmailLoginAuthState(errorTitle));
@@ -50,6 +56,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _mapSignInEmailToState(String email, String password) async {
     try {
       emit(LoadingAuthState());
+
       final supabase.AuthResponse response =
           await _mainRepository.postUserSignIn(email, password);
       if (response.user != null) {
@@ -66,7 +73,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       emit(LoadingAuthState());
 
+      /// send email verification
       var response = await _mainRepository.postUserMagicLink(email);
+
       emit(EmailSentLoginAuthState(response));
     } catch (e, stackTrace) {
       emit(ErrorAuthState(errorTitle, e.toString()));

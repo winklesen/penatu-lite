@@ -69,124 +69,8 @@ class _AccountPageState extends State<AccountPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 16, horizontal: 16),
-                          // color: _theme.dialogBackgroundColor,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.account_circle_outlined,
-                                size: 100,
-                                color: _theme.colorScheme.primary,
-                              ),
-                              Text(
-                                '${userSession?.nama_user}',
-                                style: _theme.textTheme.headlineMedium,
-                              ),
-                              Text(
-                                '${userSession?.email}',
-                                style: _theme.textTheme.bodyMedium,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    color: _theme.colorScheme.background,
-                                    borderRadius: BorderRadius.circular(24)),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 32, vertical: 32),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      'Personal Information',
-                                      style: _theme.textTheme.headlineSmall
-                                          ?.copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.store_outlined,
-                                          size: 14,
-                                          color: _theme.iconTheme.color,
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Text(
-                                          '${userSession?.nama_toko}',
-                                          style: _theme.textTheme.bodyMedium,
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 4,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.phone_outlined,
-                                          size: 14,
-                                          color: _theme.iconTheme.color,
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Text(
-                                          '${userSession?.nomorTelepon}',
-                                          style: _theme.textTheme.bodyMedium,
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    Text(
-                                      'Login and security',
-                                      style: _theme.textTheme.headlineSmall
-                                          ?.copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    SecondaryButton(
-                                      label: 'Change Password',
-                                      isFullWidth: true,
-                                      onPressed: () {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                              content:
-                                                  Text('Fitur Belum Tersedia')),
-                                        );
-                                      },
-                                    ),
-                                    Expanded(child: Container()),
-                                    PrimaryButton(
-                                      label: 'Logout',
-                                      isFullWidth: true,
-                                      color: _theme.colorScheme.error,
-                                      onPressed: () {
-                                        context
-                                            .read<AccountBloc>()
-                                            .add(LogOut());
-                                      },
-                                    ),
-                                  ],
-                                )))
+                        _buildProfileHeader(),
+                        _buildProfileContent()
                       ],
                     ),
                   ),
@@ -198,4 +82,137 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
+
+  // Widget
+  Widget _buildProfileHeader(){
+    return Container(
+      padding: EdgeInsets.symmetric(
+          vertical: 16, horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.account_circle_outlined,
+            size: 100,
+            color: _theme.colorScheme.primary,
+          ),
+          Text(
+            '${userSession?.nama_user}',
+            style: _theme.textTheme.headlineMedium,
+          ),
+          Text(
+            '${userSession?.email}',
+            style: _theme.textTheme.bodyMedium,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileContent(){
+    return Expanded(
+        child: Container(
+            decoration: BoxDecoration(
+                color: _theme.colorScheme.background,
+                borderRadius: BorderRadius.circular(24)),
+            padding: EdgeInsets.symmetric(
+                horizontal: 32, vertical: 32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Personal Information',
+                  style: _theme.textTheme.headlineSmall
+                      ?.copyWith(
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.store_outlined,
+                      size: 14,
+                      color: _theme.iconTheme.color,
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      '${userSession?.nama_toko}',
+                      style: _theme.textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.phone_outlined,
+                      size: 14,
+                      color: _theme.iconTheme.color,
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      '${userSession?.nomorTelepon}',
+                      style: _theme.textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text(
+                  'Login and security',
+                  style: _theme.textTheme.headlineSmall
+                      ?.copyWith(
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                _buildBtnPassword(),
+                Expanded(child: Container()),
+                _buildBtnLogout(),
+              ],
+            )));
+  }
+
+  // Widget
+  Widget _buildBtnPassword(){
+    return SecondaryButton(
+      label: 'Change Password',
+      isFullWidth: true,
+      onPressed: () {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(
+          SnackBar(
+              content:
+              Text('Fitur Belum Tersedia')),
+        );
+      },
+    );
+  }
+
+Widget _buildBtnLogout(){
+    return PrimaryButton(
+      label: 'Logout',
+      isFullWidth: true,
+      color: _theme.colorScheme.error,
+      onPressed: () {
+        context
+            .read<AccountBloc>()
+            .add(LogOut());
+      },
+    );
+}
 }

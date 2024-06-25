@@ -16,12 +16,18 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+
+
+  /// initState() called before UI build
   @override
   void initState() {
     super.initState();
+
+    /// Call the bloc event
     context.read<SplashBloc>().add(CheckSession());
   }
 
+  /// dispose() called before UI destroyed
   @override
   void dispose() {
     super.dispose();
@@ -32,17 +38,20 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       body: BlocListener<SplashBloc, SplashState>(
         listener: (context, state) {
+
+          /// if session exist, go to dashboard
           if (state is LoggedInSplashState) {
             Navigator.pushNamedAndRemoveUntil(
                 context, DashboardPage.routeName, (_) => false);
-          } else if (state is EmptySessionSplashState) {
+          }
+          else if (state is EmptySessionSplashState) {
             Navigator.pushNamedAndRemoveUntil(
                 context, SignInPage.routeName, (_) => false);
           }
         },
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(128),
+            padding: const EdgeInsets.all(128),
             child: Image.asset(
               'assets/icons/ic_launcher.png',
             ),

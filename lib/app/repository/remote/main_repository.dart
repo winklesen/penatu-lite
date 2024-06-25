@@ -6,6 +6,8 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 import 'package:penatu/app/repository/remote/main_data_source.dart';
 
+/// MainDataRepository
+/// implement the main data source contract
 class MainRepository extends MainDataSource {
   final ApiHelper _apiHelper;
 
@@ -82,6 +84,15 @@ class MainRepository extends MainDataSource {
         .map<DetailPesanan>((json) => DetailPesanan.fromJson(json))
         .toList();
   }
+
+  // @override
+  // Future<Pesanan> getPesananById(String idPesanan) async {
+  //   final response = await _apiHelper.getDataById(
+  //       ApiHelper.TABLE_PESANAN, 'id_pesanan', idPesanan);
+  //   return response
+  //       .map<Pesanan>((json) => Pesanan.fromJson(json))
+  //       .toList();
+  // }
 
   @override
   Future<User> getUserDetail(String idUser) async {

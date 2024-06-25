@@ -49,6 +49,9 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
     try {
       emit(LoadingOrderDetailState());
       await _mainRepository.putPesananStatus(orderId, status);
+
+
+
       emit(UpdatedOrderDetailState(status));
     } catch (e, stackTrace) {
       emit(ErrorOrderDetailState('Terjadi Kesalahan', e.toString()));

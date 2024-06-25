@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+/// Bloc State
+/// Used for defining UI state
 abstract class SplashState extends Equatable {
   @override
   List<Object> get props => [];

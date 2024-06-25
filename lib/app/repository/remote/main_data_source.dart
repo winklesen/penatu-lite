@@ -3,8 +3,9 @@ import 'package:penatu/app/model/pesanan.dart';
 import 'package:penatu/app/model/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
-/// This is interface for every app event
-/// Especially get data from remote
+/// MainDataSource (interface)
+/// network calls / API related
+/// just the abstract function
 abstract class MainDataSource {
   // User
   Future<supabase.GoTrueClient> getAuth();
@@ -38,6 +39,8 @@ abstract class MainDataSource {
   Future<List<Pesanan>> getPesananByStatus(String idUser, [String? status]);
 
   Future<List<DetailPesanan>> getPesananDetail(String idPesanan);
+
+  // Future<Pesanan> getPesananById(String idPesanan);
 
   Future<void> postPesanan(Pesanan pesanan);
 

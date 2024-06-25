@@ -46,22 +46,27 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
       User userSession = await _mainRepository.getUserSessionData();
 
+      /// Making sure pesanan use default id.
       pesanan.idPesanan = null;
       pesanan.idUser = userSession.idUser;
 
+      /// Post pesanan
       await _mainRepository.postPesanan(pesanan);
 
+      /// Get newest pesanan
       List<Pesanan> newestPesanan =
           await _mainRepository.getPesananByStatus(userSession.idUser);
 
-      String? idPesanan = newestPesanan.last.idPesanan;
 
+      String? idPesanan = newestPesanan.last.idPesanan;
       for (var i = 0; i < listDetail.length; i++) {
+        /// Add idPesanan to detail pesanan
         listDetail[i].idPesanan = idPesanan!;
         await _mainRepository.postDetailPesanan(listDetail[i]);
       }
 
       emit(SubmittedOrderState());
+
     } catch (e, stackTrace) {
       log.e(e.toString());
       emit(ErrorOrderState('Terjadi Kesalahan', e.toString()));

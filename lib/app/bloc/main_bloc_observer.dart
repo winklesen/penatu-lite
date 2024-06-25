@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penatu/app/helper/log_helper.dart';
 
+/// Return a print / log for every bloc change
 class MainBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object? event) {

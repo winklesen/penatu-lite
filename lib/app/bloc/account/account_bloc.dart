@@ -39,6 +39,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   Future<void> _mapLogOutToState() async {
     try {
       emit(LoadingAccountState());
+
+      /// Logout
       await _mainRepository.signOut();
       emit(SignedOutAccountState());
     } catch (e, stackTrace) {
